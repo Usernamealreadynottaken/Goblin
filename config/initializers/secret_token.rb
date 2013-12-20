@@ -4,4 +4,4 @@
 # If you change this key, all old signed cookies will become invalid!
 # Make sure the secret is at least 30 characters and all random,
 # no regular words or you'll be exposed to dictionary attacks.
-Goblin::Application.config.secret_token = 'c3399468436d5e0ea8a13146ea45011d4445b446cf292c6eaacc2cf8d37953be111f2bd76c2a1fbcf68a762aa19108e7974c0ac307aaf1da1e7daa4661ef6e89'
+Goblin::Application.config.secret_token = '314fc7d9ceb8c8f775b22bf8fade71a386ee1d7b7d4bcaeda8dd9922e0947fa77ca8a00f57152ec1cdf064a59ffc7faeef229b96b3740aa3016ba18397ab7680'
