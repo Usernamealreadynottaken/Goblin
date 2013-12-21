@@ -1,0 +1,8 @@
+<div class="header">
+	<!-- Completely temporary header -->
+	<% if !signed_in? %>
+		<div>Sign in link</div>
+	<% else %>
+		<div>Links: Friends | Settings | <%= link_to "Logout", sign_out_path, method: "post" %></div>
+	<% end %>
+</div> <!-- .header -->

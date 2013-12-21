@@ -2,6 +2,7 @@ class User < ActiveRecord::Base
   
   # FIELD ACCESS
   attr_accessible :name, :email, :password, :password_confirmation
+  before_create :create_remember_token
   before_save { self.email = email.downcase }
 
   # FIELD VALIDATION
@@ -17,5 +18,28 @@ class User < ActiveRecord::Base
                     
   # Add entire password handling/validation using one command because Rails                      
   has_secure_password
+  
+  # METHODS NOT RELATED TO THIS MODEL
+  
+  # Ok so there are some methods that generate and encrypt tokens. Only user has tokens so
+  # it's ok to put them here probably. The thing is that they do not set the users token, just
+  # generally generate and encrypt one which means these method could potentially be used
+  # anywhere should we implement tokens anywhere else. Because of that I tried putting them
+  # in a separate module file but I could not figure out where to put module or how to include it,
+  # Rails kept throwing errors. So I just put it here.
+  
+  def User.new_remember_token
+    SecureRandom.urlsafe_base64
+  end
+  
+  def User.encrypt(token)
+    Digest::SHA1.hexdigest(token.to_s)
+  end
+  
+  private
+  
+    def create_remember_token
+      self.remember_token = encrypt(new_remember_token)
+    end
   
 end

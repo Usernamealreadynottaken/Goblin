@@ -19,4 +19,4 @@ def secure_token
   end
 end
 
-Goblin::Application.config.secret_key = secure_token
+Goblin::Application.config.secret_token = secure_token

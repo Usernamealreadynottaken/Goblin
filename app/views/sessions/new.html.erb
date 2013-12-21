@@ -1,0 +1,17 @@
+<h1>Please sign in</h1>
+
+<% flash.each do |key, value| %>
+	<div><%= value %></div>
+<% end %>
+
+<%= form_for(:session, url: sign_in_path) do |f| %>
+
+	<%= f.label :email %>
+	<%= f.text_field :email %>
+	
+	<%= f.label :password %>
+	<%= f.password_field :password %>
+	
+	<%= f.submit "Go!" %>
+
+<% end %>

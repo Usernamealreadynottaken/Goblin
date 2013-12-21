@@ -1,4 +1,12 @@
 Goblin::Application.routes.draw do
+  root to: "sessions#new"
+  
+  match '/profile', to: 'user#show', via: 'get', as: 'profile'
+  
+  match '/signin', to: 'sessions#create', via: 'post', as: 'sign_in'
+  match '/signin', to: 'sessions#new', via: 'get', as: 'sign_in_get'
+  match '/logout', to: 'sessions#destroy', via: 'post', as: 'sign_out'
+  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
