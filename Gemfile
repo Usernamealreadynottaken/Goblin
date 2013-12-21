@@ -10,6 +10,7 @@ gem 'sass-rails'
 gem 'jquery-rails'
 gem 'jbuilder'
 gem 'will_paginate'
+gem 'bcrypt-ruby'
 
 group :production do
   gem 'pg'
