@@ -1,0 +1,9 @@
+<% game = Game.find(games_relationship.game_id) %>
+<li>
+    <a href="#">
+        <span class="name"><%= game.name %></span>
+        <span class="role"><%= games_relationship.role %></span>
+        <span class="created_at"><%= games_relationship.created_at.strftime("Joined %d/%m/%Y") %></span>
+        <p><%= game.description %></p>
+    </a>
+</li>

@@ -1,1 +1,13 @@
 <h1>Hello <%= @user.name %></h1>
+
+<div class="games">
+
+    <% if @user.games_relationships.any? %>
+        <h2>Your adventures, Brave Hero!</h2>
+        <ol class="game">
+            <%= render @games %>
+        </ol>
+        <%= will_paginate @games %>
+    <% end %>
+
+</div> <!-- .adventures -->

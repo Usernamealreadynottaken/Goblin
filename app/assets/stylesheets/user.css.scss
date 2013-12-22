@@ -1,3 +1,24 @@
 // Place all the styles related to the User controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.game {
+
+  li {
+  
+    position: relative;
+    
+    a {
+      
+      display: block;
+      color: #000000;
+      text-decoration: none;
+      z-index: 1;
+      
+      &:hover {
+        background: rgba(100, 100, 100, 0.3);
+      } // .game li a:hover
+      
+    } // .game li a
+  } // .game li
+} // .game

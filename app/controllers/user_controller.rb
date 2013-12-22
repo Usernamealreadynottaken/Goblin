@@ -7,6 +7,7 @@ class UserController < ApplicationController
   
   def show
     @user = current_user
+    @games = @user.games_relationships.paginate(page: params[:page], :per_page => 10)
   end
   
 end

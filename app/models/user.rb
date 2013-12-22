@@ -11,6 +11,10 @@ class User < ActiveRecord::Base
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :email, presence: true, format: { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }
+                    
+  # Many to many relationship with games
+  has_many :games_relationships
+  has_many :games, :through => :games_relationships
 
   # Method has_secure_password automatically validates for :password presence and :password_digest,
   # and confirms if :password_confirmation = :password                     
