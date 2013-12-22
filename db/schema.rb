@@ -11,7 +11,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131222103951) do
+ActiveRecord::Schema.define(:version => 20131222171217) do
+
+  create_table "game_categories", :force => true do |t|
+    t.string   "name",       :limit => 100
+    t.integer  "game_id"
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
+  end
 
   create_table "games", :force => true do |t|
     t.string   "name"
@@ -31,6 +38,18 @@ ActiveRecord::Schema.define(:version => 20131222103951) do
   add_index "games_relationships", ["game_id"], :name => "index_games_relationships_on_game_id"
   add_index "games_relationships", ["user_id", "game_id"], :name => "index_games_relationships_on_user_id_and_game_id"
   add_index "games_relationships", ["user_id"], :name => "index_games_relationships_on_user_id"
+
+  create_table "items", :force => true do |t|
+    t.string   "name",             :limit => 100
+    t.string   "magic_name",       :limit => 100
+    t.text     "properties"
+    t.text     "description"
+    t.boolean  "identified",                      :default => false
+    t.integer  "user_id"
+    t.integer  "game_category_id"
+    t.datetime "created_at",                                         :null => false
+    t.datetime "updated_at",                                         :null => false
+  end
 
   create_table "users", :force => true do |t|
     t.string   "name"

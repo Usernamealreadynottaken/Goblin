@@ -8,4 +8,6 @@ class Game < ActiveRecord::Base
   has_many :games_relationships
   has_many :users, :through => :games_relationships
   
+  has_many :game_categories
+  
 end
