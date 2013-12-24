@@ -3,6 +3,16 @@
 	<% if !signed_in? %>
 		<div>Sign in link</div>
 	<% else %>
-		<div>Links: Friends | Settings | <%= link_to "Logout", sign_out_path, method: "post" %></div>
+		<div>Links: <span class="click-friends">Friends</span> | Settings | 
+		    <%= link_to "Logout", sign_out_path, method: "post" %></div>
+		<div class="friends"></div>
 	<% end %>
 </div> <!-- .header -->
+
+<script>
+
+    $(".click-friends").click(function() {
+       $(".friends").replaceWith("<%= escape_javascript(render(partial: 'layouts/friends')) %>"); 
+    });
+    
+</script>

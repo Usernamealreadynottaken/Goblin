@@ -1,0 +1,26 @@
+<div class="friends">
+    <span class="close">Close</span>
+    <% if @user && @user.friends.count > 0 %>
+        <ul>
+            <% @user.friends.each do |friend| %>
+                <li>
+                    <%= friend.name %>
+                </li>
+            <% end %>
+        </ul>
+    <% else %>
+        <p>You have no friends :(</p>
+    <% end %>
+    
+    <script>
+        var interval = setInterval(function() {
+            // refresh friends
+        }, 1000);
+        
+        $(".close").click(function() {
+            clearInterval(interval);
+            $(".friends").empty();
+        });
+    </script>
+    
+</div>

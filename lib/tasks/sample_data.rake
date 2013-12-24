@@ -2,11 +2,27 @@ namespace :db do
   desc "Fill database with sample data"
   task populate: :environment do
     
-    # Create 1 user and 3 adventures
+    # Create 3 user and 3 adventures
     user = User.create!(name: "user",
                  email: "user@gmail.com",
                  password: "password",
                  password_confirmation: "password")
+                 
+    friend = User.create!(name: "friend",
+                 email: "friend@gmail.com",
+                 password: "friend",
+                 password_confirmation: "friend")   
+                 
+    friendship = Friendship.create(user_id: user.id,
+                                   friend_id: friend.id)  
+                                   
+    friend = User.create!(name: "Marco",
+                 email: "marco@gmail.com",
+                 password: "marcopass",
+                 password_confirmation: "marcopass")
+                 
+    friendship = Friendship.create(user_id: user.id,
+                                   friend_id: friend.id)  
     
     game = Game.create(name: "Into the Dragon's Lair",
                        description: "Just a single module, not a full campaign; two players are clerics.")

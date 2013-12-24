@@ -15,6 +15,14 @@ class User < ActiveRecord::Base
   # Many to many relationship with games
   has_many :games_relationships
   has_many :games, :through => :games_relationships
+  
+  # Many to many relationship with friends
+  has_many :friendships, foreign_key: "user_id", dependent: :destroy
+  has_many :friends, through: :friendships, source: :friend
+  has_many :reverse_friendships, foreign_key: "friend_id",
+                                   class_name:  "Friendship",
+                                   dependent:   :destroy
+  has_many :users, through: :reverse_relationships, source: :user
 
   # Method has_secure_password automatically validates for :password presence and :password_digest,
   # and confirms if :password_confirmation = :password                     
