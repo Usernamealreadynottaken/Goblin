@@ -11,8 +11,17 @@
 
 <script>
 
+    var interval;
+
     $(".click-friends").click(function() {
        $(".friends").replaceWith("<%= escape_javascript(render(partial: 'layouts/friends')) %>"); 
+       interval = setInterval(function() {
+           $(".friends").replaceWith("<%= escape_javascript(render(partial: 'layouts/friends')) %>"); 
+       }, 1000);
     });
+    
+    function stopRefreshing() {
+        clearInterval(interval);
+    }
     
 </script>

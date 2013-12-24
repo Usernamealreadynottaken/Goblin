@@ -1,26 +1,35 @@
 <div class="friends">
     <span class="close">Close</span>
-    <% if @user && @friends.count > 0 %>
+    <% if @user  && @friends.count + @pending.count + @invited.count > 0 %>
+    
+        <p>Your friends</p>
         <ul>
             <% @friends.each do |friend| %>
-                <li>
-                    <span class="name"><%= friend.name %></span>
-                    
-                    <!-- Show options depending on request -->
-                </li>
+            <li>
+                <span class="name"><%= friend.name %></span>
+            </li>
+            <% end %>
+            <% @pending.each do |friend| %>
+            <li>
+                <span class="name"><%= friend.name %></span>
+                <span>accept / decline</span>
+            </li>
+            <% end %>
+            <% @invited.each do |friend| %>
+            <li>
+                <span class="name"><%= friend.name %></span>
+                <span>waiting...</span>
+            </li>
             <% end %>
         </ul>
+        
     <% else %>
         <p>You have no friends :(</p>
     <% end %>
     
     <script>
-        var interval = setInterval(function() {
-            // refresh friends
-        }, 1000);
-        
         $(".close").click(function() {
-            clearInterval(interval);
+            stopRefreshing();
             $(".friends").empty();
         });
     </script>

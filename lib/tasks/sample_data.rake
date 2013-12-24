@@ -2,7 +2,7 @@ namespace :db do
   desc "Fill database with sample data"
   task populate: :environment do
     
-    # Create 3 user and 3 adventures
+    # Create 6 user and 3 adventures
     user = User.create!(name: "user",
                  email: "user@gmail.com",
                  password: "password",
@@ -25,6 +25,38 @@ namespace :db do
     friendship = Friendship.create(user_id: user.id,
                                    friend_id: friend.id,
                                    request: "active")  
+    
+    friend = User.create!(name: "Bartolomeo",
+                 email: "bart@gmail.com",
+                 password: "bartpass",
+                 password_confirmation: "bartpass")
+                 
+    friendship = Friendship.create(user_id: user.id,
+                                   friend_id: friend.id,
+                                   request: "pending")
+                                   
+    friend = User.create!(name: "reverse",
+                 email: "reverse@gmail.com",
+                 password: "reverse",
+                 password_confirmation: "reverse")
+                 
+    friendship = Friendship.create(user_id: friend.id,
+                                   friend_id: user.id,
+                                   request: "pending")
+                                   
+    friend = User.create!(name: "Beatrice",
+                 email: "beatrice@gmail.com",
+                 password: "beatrice",
+                 password_confirmation: "beatrice")
+                 
+    friendship = Friendship.create(user_id: friend.id,
+                                   friend_id: user.id,
+                                   request: "active")
+                                   
+    friend = User.create!(name: "nofriend",
+                 email: "nofriend@gmail.com",
+                 password: "nofriend",
+                 password_confirmation: "nofriend")
     
     game = Game.create(name: "Into the Dragon's Lair",
                        description: "Just a single module, not a full campaign; two players are clerics.")

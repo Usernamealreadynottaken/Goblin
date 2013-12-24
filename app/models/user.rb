@@ -48,6 +48,43 @@ class User < ActiveRecord::Base
     Digest::SHA1.hexdigest(token.to_s)
   end
   
+  def get_active_friends
+    active_friends = []
+    
+    friendships_active = friendships.select { |friendship| friendship.request == "active" }
+    friendships_active.each do |friendship|
+      active_friends += friends.select { |friend| friend.id == friendship.friend_id }
+    end
+    reverse_friendships_active = reverse_friendships.select { |friendship| friendship.request == "active" }
+    reverse_friendships_active.each do |friendship|
+      active_friends += users.select { |friend| friend.id == friendship.user_id }
+    end
+    
+    active_friends.sort! { |a, b| a.name.downcase <=> b.name.downcase }
+  end
+  
+  def get_invited_friends
+    invited_friends = []
+    
+    friendships_invited = friendships.select { |friendship| friendship.request == "pending" }
+    friendships_invited.each do |friendship|
+      invited_friends += friends.select { |friend| friend.id == friendship.friend_id }
+    end
+    
+    invited_friends.sort! { |a, b| a.name.downcase <=> b.name.downcase }
+  end
+  
+  def get_pending_friends
+    pending_friends = []
+    
+    reverse_friendships_pending = reverse_friendships.select { |friendship| friendship.request == "pending" }
+    reverse_friendships_pending.each do |friendship|
+      pending_friends += users.select { |friend| friend.id == friendship.user_id }
+    end
+    
+    pending_friends.sort! { |a, b| a.name.downcase <=> b.name.downcase }
+  end
+  
   private
   
     def create_remember_token

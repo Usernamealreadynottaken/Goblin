@@ -8,7 +8,9 @@ class UserController < ApplicationController
   def show
     @user = current_user
     @games = @user.games_relationships.paginate(page: params[:page], :per_page => 10)
-    @friends = (@user.users + @user.friends).sort! { |a, b| a.name.downcase <=> b.name.downcase };
+    @friends = @user.get_active_friends
+    @pending = @user.get_pending_friends
+    @invited = @user.get_invited_friends
     # TODO
   end
   
