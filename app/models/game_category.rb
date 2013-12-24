@@ -6,6 +6,10 @@ class GameCategory < ActiveRecord::Base
   # RELATIONSHIPS
   belongs_to :game
   
-  has_many :items  
+  has_many :items
+  
+  def gm_items
+    items.select { |i| i.user_id == game.gm.id }
+  end  
   
 end

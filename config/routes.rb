@@ -3,6 +3,8 @@ Goblin::Application.routes.draw do
   
   match '/profile', to: 'user#show', via: 'get', as: 'profile'
   
+  match '/game/:id', to: 'games#show', via: 'get', as: 'game'
+  
   match '/signin', to: 'sessions#create', via: 'post', as: 'sign_in'
   match '/signin', to: 'sessions#new', via: 'get', as: 'sign_in_get'
   match '/logout', to: 'sessions#destroy', via: 'post', as: 'sign_out'
