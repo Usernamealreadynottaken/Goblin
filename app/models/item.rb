@@ -6,5 +6,6 @@ class Item < ActiveRecord::Base
   
   # RELATIONSHIPS
   belongs_to :game_category
+  belongs_to :user
   
 end

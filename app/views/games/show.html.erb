@@ -1,0 +1,65 @@
+<h1><%= @game.name %></h1>
+<div class="description"><%= @game.description %></div>
+
+<!-- Menu where you can view/invite/kick players from your game -->
+<div class="players-manager">Players</div>
+
+<!-- GMs game menu -->
+<div class="gm-container">
+	<div class="gm-menu">
+		<input type="text">
+		<div class="gm-add-category">Add category</div>
+		<div class="gm-add-item">Add item</div>
+	</div> <!-- .gm-menu -->
+	
+	<div class="gm-game-categories<%= " empy" if @game.game_categories.empty? %>">
+	<% "No categories" if @game.game_categories.empty? %>
+	
+	<% @game.game_categories.each do |category| %>
+		<div class="category">
+			<div class="category-title"><%= category.name %></div>
+			
+			<div class="category-items<%= " empty" if category.gm_items.empty? %>">
+			<%= "Empty" if category.gm_items.empty? %>
+			<% category.gm_items.each do |item| %>
+				<div class="category-item item">
+					<div class="item-name"><%= item.name %></div>
+					<div class="item-menu">Edit Delete</div>
+				</div> <!-- .category-item .item -->
+			<% end %>
+			
+			</div> <!-- .category-items -->
+		</div> <!-- .category -->
+	<% end %>
+	
+	</div> <!-- .gm-game-categories -->
+	
+</div> <!-- .gm-container -->
+
+<!-- Players inventory -->
+<div class="inventory-container">
+	<div class="inventory-identify">Identify</div>
+	
+	<div class="inventory<%= " empty" if @game.players.empty? %>">
+	<%= "No players" if @game.players.empty? %>
+		
+	<% @game.players.each do |player| %>
+		<div class="inventory-player">
+			<div class="player-name"><%= player.name %></div>
+			
+			<div class="inventory-items<%= " empty" if player.items_in(@game) %>">
+			<%= "No items" if player.items_in(@game).empty? %>
+			<% player.items_in(@game).each do |item| %>
+				<div class="inventory-item item">
+					<div class="item-name"><%= item.name %></div>
+					<div class="item-menu">Edit Delete</div>
+				</div> <!-- .inventory-item .item -->
+			<% end %>				
+			</div> <!-- .inventory-items -->
+			
+		</div> <!-- .inventory-player -->
+	<% end %>
+
+	</div> <!-- .inventory -->
+
+</div> <!-- .inventory-container -->

@@ -10,4 +10,12 @@ class Game < ActiveRecord::Base
   
   has_many :game_categories
   
+  def gm
+    User.find { |u| u.id == games_relationships.find { |g| g.role == "GM" }.user_id }
+  end
+  
+  def players
+    users.delete { |u| u.id == gm.id }
+  end
+  
 end

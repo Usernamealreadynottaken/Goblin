@@ -23,6 +23,9 @@ class User < ActiveRecord::Base
                                    class_name:  "Friendship",
                                    dependent:   :destroy
   has_many :users, through: :reverse_friendships, source: :user
+  
+  # Relationship with items
+  has_many :items
 
   # Method has_secure_password automatically validates for :password presence and :password_digest,
   # and confirms if :password_confirmation = :password                     
@@ -30,6 +33,10 @@ class User < ActiveRecord::Base
                     
   # Add entire password handling/validation using one command because Rails                      
   has_secure_password
+  
+  def items_in(game)
+    items.select { |i| i.game_category.game.id == game.id }    
+  end
   
   # METHODS NOT RELATED TO THIS MODEL
   
