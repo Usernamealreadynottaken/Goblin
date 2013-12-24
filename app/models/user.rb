@@ -22,7 +22,7 @@ class User < ActiveRecord::Base
   has_many :reverse_friendships, foreign_key: "friend_id",
                                    class_name:  "Friendship",
                                    dependent:   :destroy
-  has_many :users, through: :reverse_relationships, source: :user
+  has_many :users, through: :reverse_friendships, source: :user
 
   # Method has_secure_password automatically validates for :password presence and :password_digest,
   # and confirms if :password_confirmation = :password                     

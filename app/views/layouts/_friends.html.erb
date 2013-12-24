@@ -1,10 +1,12 @@
 <div class="friends">
     <span class="close">Close</span>
-    <% if @user && @user.friends.count > 0 %>
+    <% if @user && @friends.count > 0 %>
         <ul>
-            <% @user.friends.each do |friend| %>
+            <% @friends.each do |friend| %>
                 <li>
-                    <%= friend.name %>
+                    <span class="name"><%= friend.name %></span>
+                    
+                    <!-- Show options depending on request -->
                 </li>
             <% end %>
         </ul>

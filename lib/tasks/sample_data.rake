@@ -14,7 +14,8 @@ namespace :db do
                  password_confirmation: "friend")   
                  
     friendship = Friendship.create(user_id: user.id,
-                                   friend_id: friend.id)  
+                                   friend_id: friend.id,
+                                   request: "active")  
                                    
     friend = User.create!(name: "Marco",
                  email: "marco@gmail.com",
@@ -22,7 +23,8 @@ namespace :db do
                  password_confirmation: "marcopass")
                  
     friendship = Friendship.create(user_id: user.id,
-                                   friend_id: friend.id)  
+                                   friend_id: friend.id,
+                                   request: "active")  
     
     game = Game.create(name: "Into the Dragon's Lair",
                        description: "Just a single module, not a full campaign; two players are clerics.")
