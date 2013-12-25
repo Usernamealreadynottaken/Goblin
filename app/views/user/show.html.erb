@@ -1,17 +1,30 @@
-<% flash.each do |key, value| %>
-	<div><%= value %></div>
+<% if flash.any? %>
+	<div class="flash">
+	<% flash.each do |key, value| %>
+		<div><%= value %></div>
+	<% end %>
+	</div>
 <% end %>
 
-<h1>Hello <%= @user.name %></h1>
+<div class="profile-menu">
+	<div class="search-bar">
+		Search:
+		<input type="text">
+	</div>
+	<div class="find-adventure">Find adventure to join</div>
+	<div class="create-adventure">Create adventure</div>
+</div> <!-- .profile-menu -->
 
-<div class="games">
+<div class="games<%= " empty" if @user.games_relationships.empty? %>">
 
-    <% if @user.games_relationships.any? %>
-        <h2>Your adventures, Brave Hero!</h2>
-        <ol class="game">
-            <%= render @games %>
-        </ol>
-        <%= will_paginate @games %>
-    <% end %>
+<% if @user.games_relationships.any? %>
+    <h2>Your adventures:</h2>
+    <ol class="game">
+        <%= render @games %>
+    </ol>
+    <%= will_paginate @games %>
+<% else %>
+	You currently don't participate in any adventures.
+<% end %>
 
 </div> <!-- .games -->

@@ -1,0 +1,23 @@
+/*
+ *= require_self
+ *= require_tree .
+ */
+
+body {
+	
+	.header {
+		height: 25px;
+		
+		.account-links {
+		  float: right;
+		}
+		
+	} // .header
+	
+	.content {
+	  width: 1700px;
+    margin-left: auto;
+    margin-right: auto;
+	} // .content
+	
+}

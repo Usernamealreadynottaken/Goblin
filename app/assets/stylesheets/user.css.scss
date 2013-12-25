@@ -1,24 +1,55 @@
-// Place all the styles related to the User controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+.flash {
+  border: 1px solid black;
+  padding: 5px;
+  margin: 0 0 10px 0;
+}
 
-.game {
-
-  li {
+.profile-menu {
   
-    position: relative;
+  .search-bar {
+    display: inline-block;
+  } // .search-bar
+  
+  .find-adventure {
+    display: inline-block;
+    float: right;
+  } // .find-adventure
+  
+  .create-adventure {
+    display: inline-block;
+    float: right;
+  } // .create-adventure
+  
+} // .profile-menu
+
+.games {
+  
+  .game {
+  
+    li {
     
-    a {
+      position: relative;
       
-      display: block;
-      color: #000000;
-      text-decoration: none;
-      z-index: 1;
-      
-      &:hover {
-        background: rgba(100, 100, 100, 0.3);
-      } // .game li a:hover
-      
-    } // .game li a
-  } // .game li
-} // .game
+      a {
+        
+        display: block;
+        color: #000000;
+        text-decoration: none;
+        z-index: 1;
+        
+        &:hover {
+          background: rgba(100, 100, 100, 0.3);
+        } // .game li a:hover
+        
+      } // .game li a
+    
+    } // .game li
+  
+  } // .game
+    
+} // .games
+
+.games.empty {
+  text-align: center;
+  padding: 25px 0 0 0;
+} // .games.empty

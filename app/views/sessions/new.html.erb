@@ -1,17 +1,31 @@
-<h1>Please sign in</h1>
-
-<% flash.each do |key, value| %>
-	<div><%= value %></div>
-<% end %>
-
-<%= form_for(:session, url: sign_in_path) do |f| %>
-
-	<%= f.label :user, "E-mail or username:" %>
-	<%= f.text_field :user %>
+<div class="sign-in-container">
+	<h1>Please sign in</h1>
 	
-	<%= f.label :password, "Password:" %>
-	<%= f.password_field :password %>
+	<% if flash.any? %>
+		<div class="flash">
+		<% flash.each do |key, value| %>
+			<div><%= value %></div>
+		<% end %>
+		</div>
+	<% end %>
 	
-	<%= f.submit "Go!" %>
-
-<% end %>
+	<%= form_for(:session, url: sign_in_path) do |f| %>
+	
+		<div class="inputs">
+			<div class="login">
+				<%= f.label :user, "E-mail or username:" %>
+				<%= f.text_field :user %>
+			</div>
+			
+			<div class="password">
+				<%= f.label :password, "Password:" %>
+				<%= f.password_field :password %>
+			</div>
+		</div> <!-- .inputs -->
+		
+		<div class="submit">
+			<%= f.submit "Go!" %>
+		</div>
+	
+	<% end %>
+</div> <!-- .sign-in-container -->
