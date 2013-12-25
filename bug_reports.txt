@@ -1,0 +1,4 @@
+Friends: jak masz otworzone menu friends i nie zamkniesz tylko klikniesz w 'Friends' drugi raz to (wyglada ze)
+	odpala sie nowy watek wykonujacy to co sie wykonuje co interwal. Obecnie reportuje to na wersji gdzie jeszcze
+	nie zostal pusniety ajax wiec w konsekwencji jak odpale 2 watki refreshujace to jak zamkne friendsow usuwa sie
+	tylko 1 z nich a drugi renderuje friendsow jeszcze raz.

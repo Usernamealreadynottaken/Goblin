@@ -1,9 +1,9 @@
 <div class="header">
 	<!-- Completely temporary header -->
 	<% if !signed_in? %>
-		<div>Sign in link</div>
+		<div class="account-links">Sign in link</div>
 	<% else %>
-		<div>Links: <span class="click-friends <%= "updated" if @user.update_flag? %>">Friends</span> | Settings | 
+		<div class="account-links">Links: <span class="click-friends <%= "updated" if @user.update_flag? %>">Friends</span> | Settings | 
 		    <%= link_to "Logout", sign_out_path, method: "post" %></div>
 		<div class="friends"></div>
 	<% end %>

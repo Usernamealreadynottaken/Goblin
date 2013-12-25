@@ -1,3 +1,103 @@
-// Place all the styles related to the Games controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+.game-header {
+
+  .players-manager {
+    width: 100%;
+    text-align: right;
+  } // .players-manager
+
+} // .game-header
+
+.game-content {
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  
+  .gm-container {
+    display: inline-block;
+    width: 400px;
+    min-height: 400px;
+    margin: 20px 0 0 0;
+    
+    .gm-menu {
+      width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 5px 0;
+      
+      .gm-add-category {
+        display: inline-block;
+        float: right;
+      } // .gm-add-category
+      
+      .gm-add-item {
+        display: inline-block;
+        float: right;
+      } // .gm-add-item
+      
+    } // .gm-menu
+    
+    .gm-game-categories {
+      width: 100%;
+      
+      .category {
+        border-top: 1px solid black;
+        margin: 20px 0 0 0;
+        
+        .category-title {
+          text-align: center;
+        }
+        
+        .category-items {
+          width: 90%;
+          margin-left: auto;
+          margin-right: auto;
+          padding: 5px 0 0 0;
+          
+          .item {
+            padding: 5px 0;
+            
+            .item-name {
+              display: inline-block;                  
+            } // .item-name
+            
+            .item-menu {
+              display: inline-block;
+              float: right;
+            } // .item-menu
+            
+          } // .item
+          
+        } // .category-items
+        
+      } // .category
+      
+    } // .gm-game-categories
+    
+    .gm-game-categories.empty {
+      text-align: center;
+      padding: 10px 0;
+    } // .gm-game-categories.empty
+    
+  } // .gm-container
+  
+  .inventory-container {
+    display: inline-block;
+    float: right;
+    
+    .inventory-identify {
+      text-align: right;
+    } // .inventory-identify
+    
+    .inventory {
+      border: 1px solid black;
+      width: 400px;
+      text-align: center;
+    } // .inventory
+    
+    .inventory.empty {
+      padding: 10px 0;
+    } // .inventory.empty
+    
+  } // .inventory-container
+  
+} // .game-content 
