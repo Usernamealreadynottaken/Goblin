@@ -2,6 +2,7 @@ Goblin::Application.routes.draw do
   root to: "sessions#new"
   
   match '/profile', to: 'user#show', via: 'get', as: 'profile'
+  match '/friends/:id/flag', to: 'user#get_update_flag', via: 'post', as: 'get_update_flag'
   
   match '/game/:id', to: 'games#show', via: 'get', as: 'game'
   

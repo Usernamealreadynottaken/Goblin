@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
   
   # FIELD ACCESS
-  attr_accessible :name, :email, :password, :password_confirmation
+  attr_accessible :name, :email, :password, :password_confirmation, :update_flag
   before_create :create_remember_token
   before_save { self.email = email.downcase }
 

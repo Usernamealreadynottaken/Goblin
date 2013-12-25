@@ -3,21 +3,35 @@
 	<% if !signed_in? %>
 		<div>Sign in link</div>
 	<% else %>
-		<div>Links: <span class="click-friends">Friends</span> | Settings | 
+		<div>Links: <span class="click-friends <%= "updated" if @user.update_flag? %>">Friends</span> | Settings | 
 		    <%= link_to "Logout", sign_out_path, method: "post" %></div>
 		<div class="friends"></div>
 	<% end %>
 </div> <!-- .header -->
-
+<style>  .updated { color: red }  </style>
+<% if @user %>
 <script>
 
     var interval;
 
     $(".click-friends").click(function() {
-       $(".friends").replaceWith("<%= escape_javascript(render(partial: 'layouts/friends')) %>"); 
+       $(".friends").replaceWith("<%= 
+        escape_javascript(render(partial: 'layouts/friends')) 
+       %>");
        interval = setInterval(function() {
-           $(".friends").replaceWith("<%= escape_javascript(render(partial: 'layouts/friends')) %>"); 
-       }, 1000);
+           
+           $.ajax({
+               type: "POST",
+               url: "<%= url_for(get_update_flag_url(@user.id)) %>"               
+           })
+               .done(function(data) {
+                   if (data.update == true) {
+                       $(".click-friends").removeClass("updated");
+                       $(".friends").replaceWith("<%= escape_javascript(render(partial: 'layouts/friends')) %>"); 
+                   }
+               });
+           
+       }, 500);
     });
     
     function stopRefreshing() {
@@ -25,3 +39,4 @@
     }
     
 </script>
+<% end %>

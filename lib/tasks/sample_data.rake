@@ -6,12 +6,14 @@ namespace :db do
     user = User.create!(name: "user",
                  email: "user@gmail.com",
                  password: "password",
-                 password_confirmation: "password")
+                 password_confirmation: "password",
+                 update_flag: false)
                  
     friend = User.create!(name: "friend",
                  email: "friend@gmail.com",
                  password: "friend",
-                 password_confirmation: "friend")   
+                 password_confirmation: "friend",
+                 update_flag: false)   
                  
     friendship = Friendship.create(user_id: user.id,
                                    friend_id: friend.id,
@@ -20,7 +22,8 @@ namespace :db do
     friend = User.create!(name: "Marco",
                  email: "marco@gmail.com",
                  password: "marcopass",
-                 password_confirmation: "marcopass")
+                 password_confirmation: "marcopass",
+                 update_flag: false)
                  
     friendship = Friendship.create(user_id: user.id,
                                    friend_id: friend.id,
@@ -29,7 +32,8 @@ namespace :db do
     friend = User.create!(name: "Bartolomeo",
                  email: "bart@gmail.com",
                  password: "bartpass",
-                 password_confirmation: "bartpass")
+                 password_confirmation: "bartpass",
+                 update_flag: false)
                  
     friendship = Friendship.create(user_id: user.id,
                                    friend_id: friend.id,
@@ -38,7 +42,8 @@ namespace :db do
     friend = User.create!(name: "reverse",
                  email: "reverse@gmail.com",
                  password: "reverse",
-                 password_confirmation: "reverse")
+                 password_confirmation: "reverse",
+                 update_flag: false)
                  
     friendship = Friendship.create(user_id: friend.id,
                                    friend_id: user.id,
@@ -47,7 +52,8 @@ namespace :db do
     friend = User.create!(name: "Beatrice",
                  email: "beatrice@gmail.com",
                  password: "beatrice",
-                 password_confirmation: "beatrice")
+                 password_confirmation: "beatrice",
+                 update_flag: false)
                  
     friendship = Friendship.create(user_id: friend.id,
                                    friend_id: user.id,
@@ -56,7 +62,8 @@ namespace :db do
     friend = User.create!(name: "nofriend",
                  email: "nofriend@gmail.com",
                  password: "nofriend",
-                 password_confirmation: "nofriend")
+                 password_confirmation: "nofriend",
+                 update_flag: false)
     
     game = Game.create(name: "Into the Dragon's Lair",
                        description: "Just a single module, not a full campaign; two players are clerics.")
