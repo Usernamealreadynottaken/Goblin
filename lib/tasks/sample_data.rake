@@ -48,7 +48,9 @@ namespace :db do
     friendship = Friendship.create(user_id: friend.id,
                                    friend_id: user.id,
                                    request: "pending")
-                                   
+
+    # Careful when deleting!
+    # This user is assigned to a game!                                   
     friend = User.create!(name: "Beatrice",
                  email: "beatrice@gmail.com",
                  password: "beatrice",
@@ -58,7 +60,9 @@ namespace :db do
     friendship = Friendship.create(user_id: friend.id,
                                    friend_id: user.id,
                                    request: "active")
-                                   
+    
+    # Careful when deleting!
+    # This user is assigned to a game!                               
     friend = User.create!(name: "nofriend",
                  email: "nofriend@gmail.com",
                  password: "nofriend",
@@ -79,12 +83,19 @@ namespace :db do
                                      the clerics of Gruumsh")
     GamesRelationship.create(user_id: user.id, game_id: game.id, role: "Player")
     
-    # Create some categories for first adventure
+    # Add some players to the first adventure
     game = Game.first
+    
+    GamesRelationship.create(user_id: User.find_by_name("Beatrice").id, game_id: game.id, role: "Player")
+    GamesRelationship.create(user_id: User.find_by_name("nofriend").id, game_id: game.id, role: "Player") 
+    
+    # Create some categories for first adventure
     
     cat1 = GameCategory.create(name: "Lair entrance", game_id: game.id)
     cat2 = GameCategory.create(name: "The Lair", game_id: game.id)
     cat3 = GameCategory.create(name: "Pool inside lair", game_id: game.id)
+    
+    GameCategory.create(name: "Rock besides pool", game_id: game.id)
     
     # Create some items for the first adventure
     

@@ -8,7 +8,12 @@ body {
 	.header {
 		height: 25px;
 		
+		.logo {
+		  display: inline-block;
+		}
+		
 		.account-links {
+		  display: inline-block;
 		  float: right;
 		}
 		

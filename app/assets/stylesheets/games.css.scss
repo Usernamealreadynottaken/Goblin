@@ -69,6 +69,10 @@
           
         } // .category-items
         
+        .category-items.empty {
+          text-align: center;
+        } // .category-items.empty
+        
       } // .category
       
     } // .gm-game-categories
@@ -91,11 +95,32 @@
     .inventory {
       border: 1px solid black;
       width: 400px;
-      text-align: center;
+      padding: 0 0 20px 0;
+      
+      .inventory-player {
+        border-top: 1px solid black;
+        margin: 20px 0 0 0;
+        
+        .player-name {
+          text-align: center;
+        }
+        
+        .inventory-items {
+          
+        } // .inventory-items
+        
+        .inventory-items.empty {
+          text-align: center;
+          padding: 10px 0 0 0;
+        } // .inventory-items.empty
+        
+      } // .inventory-player
+      
     } // .inventory
     
     .inventory.empty {
       padding: 10px 0;
+      text-align: center;
     } // .inventory.empty
     
   } // .inventory-container

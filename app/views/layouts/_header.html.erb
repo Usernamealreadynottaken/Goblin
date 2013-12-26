@@ -1,8 +1,10 @@
 <div class="header">
-	<!-- Completely temporary header -->
 	<% if !signed_in? %>
 		<div class="account-links">Sign in link</div>
 	<% else %>
+		<div class="logo">
+			<%= link_to "GOBLIN", profile_path %>
+		</div>
 		<div class="account-links">Links: <span class="click-friends <%= "updated" if @user.update_flag? %>">Friends</span> | Settings | 
 		    <%= link_to "Logout", sign_out_path, method: "post" %></div>
 		<div class="friends"></div>
