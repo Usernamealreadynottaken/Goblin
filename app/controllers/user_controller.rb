@@ -6,11 +6,7 @@ class UserController < ApplicationController
   end
   
   def show
-    @user = current_user
     @games = @user.games_relationships.paginate(page: params[:page], :per_page => 10)
-    @friends = @user.get_active_friends
-    @pending = @user.get_pending_friends
-    @invited = @user.get_invited_friends
   end
   
   def get_update_flag
