@@ -1,3 +1,14 @@
+/* Prevent the text contents of draggable elements from being selectable. */
+[draggable] {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  /* Required to make elements draggable in old WebKit */
+  -khtml-user-drag: element;
+  -webkit-user-drag: element;
+}
+
 .game-header {
 
   .players-manager {
@@ -11,6 +22,25 @@
   width: 90%;
   margin-left: auto;
   margin-right: auto;
+  
+  .item {
+    padding: 5px 0;
+    margin: 3px;
+    background: #999999;
+    border-radius: 5px;
+    border: 3px solid #333333;
+    cursor: move;
+    
+    .item-name {
+      display: inline-block;                  
+    } // .item-name
+    
+    .item-menu {
+      cursor: pointer;
+      display: inline-block;
+      float: right;
+    } // .item-menu
+  } // .item
   
   .gm-container {
     display: inline-block;
@@ -37,40 +67,35 @@
     } // .gm-menu
     
     .gm-game-categories {
+      list-style: none;
+      padding: 0;
       width: 100%;
       
       .category {
         border-top: 1px solid black;
         margin: 20px 0 0 0;
+        padding: 0;
+        list-style: none;
         
         .category-title {
           text-align: center;
-        }
+        } // .category-title
         
         .category-items {
           width: 90%;
           margin-left: auto;
           margin-right: auto;
           padding: 5px 0 0 0;
-          
-          .item {
-            padding: 5px 0;
-            
-            .item-name {
-              display: inline-block;                  
-            } // .item-name
-            
-            .item-menu {
-              display: inline-block;
-              float: right;
-            } // .item-menu
-            
-          } // .item
+          text-align: left;
           
         } // .category-items
         
         .category-items.empty {
           text-align: center;
+          
+          p {
+            margin: 0;
+          }
         } // .category-items.empty
         
       } // .category
@@ -106,12 +131,21 @@
         }
         
         .inventory-items {
-          
+          width: 90%;
+          text-align: left;
+          list-style: none;
+          padding: 0;
+          margin: 0 auto;
         } // .inventory-items
         
         .inventory-items.empty {
           text-align: center;
           padding: 10px 0 0 0;
+          
+          p {
+            margin: 0;
+            padding: 0;
+          }
         } // .inventory-items.empty
         
       } // .inventory-player

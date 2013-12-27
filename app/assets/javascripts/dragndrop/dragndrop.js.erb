@@ -1,0 +1,31 @@
+var dragSrc = null;
+var draggedItem = null;
+
+$(".gm-game-categories").sortable();
+$(".sortable").sortable({ 
+	connectWith: ".sortable",
+	start: startDragging,
+	stop: stopDragging,
+});
+
+function startDragging(event, ui) {
+	dragSrc = $(this);
+	draggedItem = ui.item;
+}
+
+function stopDragging(event, ui) {
+	var dragDest = ui.item.parent();
+	if (dragSrc.children().length == 0) {
+		dragSrc.addClass("empty");
+		dragSrc.append("<p>Empty</p>");
+	}
+	if (dragDest.children().length == 2) {
+		dragDest.removeClass("empty");
+		dragDest.children("p").remove();
+	}
+	if (dragSrc[0] != dragDest[0]) {
+        var newCategory = dragDest.parent().attr("id").substring(9);
+        var itemId = draggedItem.attr("id").substring(5);
+		update(newCategory, itemId);
+	}
+}

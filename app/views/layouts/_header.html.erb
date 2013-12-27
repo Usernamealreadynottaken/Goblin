@@ -25,7 +25,7 @@
            
            $.ajax({
                type: "POST",
-               url: "<%= url_for(get_update_flag_url(@user.id)) %>"               
+               url: "<%= url_for(get_update_flag_url(@user.id)) %>",
            })
                .done(function(data) {
                    if (data.update == true) {
