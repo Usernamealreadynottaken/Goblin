@@ -47,6 +47,40 @@
 			
 		</div> <!-- .gm-container -->
 		
+		<!-- Add/edit item form -->
+		<div class="itemform-container">
+			<div class="itemform-close-button">Close</div>
+			<div class="itemform-title">Title</div>			
+			<div class="itemform-form-container">
+				<%= form_for(:item, html: {class: "itemform-form"}) do |f| %>
+				
+					<%= f.hidden_field :id %>
+				
+					<%= f.label :name, "Name:" %><br>
+					<%= f.text_field :name, class: "itemform-name" %><br>
+					
+					<%= f.label :magic_name, "Magic name:" %><br>
+					<%= f.text_field :magic_name, class: "itemform-magicname" %><br>
+					
+					<%= f.label :properties, "Properties:" %><br>
+					<%= f.text_area :properties, class: "itemform-properties" %><br>
+					
+					<%= f.label :description, "Description:" %><br>
+					<%= f.text_area :description, class: "itemform-description" %><br>
+					
+					<div class="identified">
+						<%= f.check_box :identified, class: "itemform-identified" %>
+						<%= f.label :identified, "Identified" %><br>
+					</div>
+					
+					<div class="submit">
+						<a class="itemform-submit">Add/edit</a>
+					</div>
+				
+				<% end %>
+			</div> <!-- .itemform-form-container -->
+		</div> <!-- .itemform-container -->
+		
 		<!-- Players inventory -->
 		<div class="inventory-container">
 			<div class="inventory-identify">Identify</div>
@@ -92,6 +126,56 @@
         $.ajax({
                type: "POST",
                url: url,
-           })
+          });
     }
+    
+    /*
+     * ITEM ADD/EDIT FORM JS
+     * Goes here instead of separate js file because I need to use some ruby.
+     * There's little ruby so maybe we can push some of it to separate js file
+     * should that need arise.
+     */
+    
+    $(document).ready(function() {
+    	$(".itemform-container").toggle();
+    	
+    	var itemAddUrl = "<%= url_for(item_add_path) %>";
+    	var itemUpdateBaseUrl = "<%= url_for(item_update_path("item_id")) %>";
+    });
+    
+    function prepareFormAdd() {
+    	$(".itemform-title").text("Add new item");
+    	$(".itemform-submit").text("Add item");
+    	if (!$(".itemform-container").is(":visible")) {
+    		$(".itemform-container").toggle();
+    	}
+    }
+    
+    function prepareFormUpdate() {
+    	$(".itemform-title").text("Edit item");
+    	$(".itemform-submit").text("Edit item");
+    	if (!$(".itemform-container").is(":visible")) {
+    		$(".itemform-container").toggle();
+    	}
+    }
+    
+    $(".item").click(function() {
+    	prepareFormUpdate();
+    });
+    
+    $(".gm-add-item").click(function() {
+    	prepareFormAdd();
+    });
+    
+    $(".itemform-close-button").click(function() {
+    	$(".itemform-container").toggle();
+    });
+    
+    $(".itemform-submit").click(function() {
+    	$(".itemform-form").attr('action', "<%= url_for(item_add_path) %>")
+    	$(".itemform-form").ajaxForm(function(data) {
+    		alert(data);
+    	});
+    	$(".itemform-form").submit();
+    });
 </script>

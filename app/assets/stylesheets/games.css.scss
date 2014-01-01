@@ -109,6 +109,65 @@
     
   } // .gm-container
   
+  .itemform-container {
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid black;
+    padding: 5px;
+    margin: 0 0 0 150px;
+    
+    .itemform-close-button {
+      width: 100%;
+      text-align: right;
+    }
+    
+    .itemform-title {
+      width: 100%;
+      text-align: center;
+    }
+    
+    .itemform-form-container {
+      
+      label {
+        
+      }
+      
+      input {
+        width: 337px;
+      }
+      
+      textarea {
+        resize: none;
+        height: 100px;
+      }
+      
+      .identified {
+        
+        input {
+          width: 13px;
+        }
+        
+        label {
+          margin: 0;
+        }
+        
+      } // .identified
+      
+      .submit {
+        width: 100%;
+        text-align: center;
+      
+        input[type="submit"] {
+          width: auto;
+        }
+      
+      }
+      
+    } // .itemform-form-container
+    
+  } // .itemform-container
+  
   .inventory-container {
     display: inline-block;
     float: right;
