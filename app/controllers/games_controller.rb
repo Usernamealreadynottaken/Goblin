@@ -19,6 +19,15 @@ class GamesController < ApplicationController
     render :nothing => true
     item = Item.find(params[:item_id])
     item.update_attribute(:game_category_id, params[:category_id])
+    
+    gm_id = item.game_category.game.gm.id
+    item.update_attribute(:user_id, gm_id)
+  end
+  
+  def update_player_in_item
+    render :nothing => true
+    item = Item.find(params[:item_id])
+    item.update_attribute(:user_id, params[:user_id])
   end
   
 end

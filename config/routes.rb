@@ -7,6 +7,8 @@ Goblin::Application.routes.draw do
   match '/game/:id', to: 'games#show', via: 'get', as: 'game'
   match '/game/update_category/:category_id/in_item/:item_id', 
     to: 'games#update_category_in_item', via: 'post', as: 'update_category_in_item'
+  match 'game/update_player/:user_id/in_item/:item_id',
+    to: 'games#update_player_in_item', via: 'post', as: 'update_player_in_item'
   
   match '/signin', to: 'sessions#create', via: 'post', as: 'sign_in'
   match '/signin', to: 'sessions#new', via: 'get', as: 'sign_in_get'
