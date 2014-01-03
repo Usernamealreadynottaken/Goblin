@@ -3,10 +3,13 @@ Goblin::Application.routes.draw do
   
   match '/profile', to: 'user#show', via: 'get', as: 'profile'
   match '/friends/:id/flag', to: 'user#get_update_flag', via: 'post', as: 'get_update_flag'
+  match '/friends/:id/remove_friendship/:friend_id', to: 'user#remove_friendship', via: 'post', as: 'remove_friendship'
   
   match '/game/:id', to: 'games#show', via: 'get', as: 'game'
   match '/game/update_category/:category_id/in_item/:item_id', 
     to: 'games#update_category_in_item', via: 'post', as: 'update_category_in_item'
+  match 'game/update_player/:user_id/in_item/:item_id',
+    to: 'games#update_player_in_item', via: 'post', as: 'update_player_in_item'
   
   match '/signin', to: 'sessions#create', via: 'post', as: 'sign_in'
   match '/signin', to: 'sessions#new', via: 'get', as: 'sign_in_get'

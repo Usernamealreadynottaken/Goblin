@@ -16,4 +16,15 @@ class UserController < ApplicationController
     user.update_attribute(:update_flag, false)
   end
   
+  def remove_friendship
+    render :nothing => true
+    friendship = Friendship.find(:all, :conditions => [
+      '(user_id = ? AND friend_id = ?) OR (user_id = ? AND friend_id = ?)',
+      params[:id], params[:friend_id], params[:friend_id], params[:id]
+    ]).first
+    friendship.destroy
+    user = User.find(params[:id])
+    user.update_attribute(:update_flag, true)
+  end
+  
 end

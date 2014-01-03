@@ -6,6 +6,16 @@ $(".sortable").sortable({
 	connectWith: ".sortable",
 	start: startDragging,
 	stop: stopDragging,
+	items: "li:not(.emptyMessage)",
+	receive: function(event, ui) {
+		$('li.emptyMessage', this).hide();
+	     
+		if($('li:not(.emptyMessage)', ui.sender).length == 0){
+	    	$('li.emptyMessage', ui.sender).show();
+	 	} else {
+	 		$('li.emptyMessage', ui.sender).hide();
+		}            
+	}
 });
 
 function startDragging(event, ui) {
@@ -15,17 +25,15 @@ function startDragging(event, ui) {
 
 function stopDragging(event, ui) {
 	var dragDest = ui.item.parent();
-	if (dragSrc.children().length == 0) {
-		dragSrc.addClass("empty");
-		dragSrc.append("<p>Empty</p>");
-	}
-	if (dragDest.children().length == 2) {
-		dragDest.removeClass("empty");
-		dragDest.children("p").remove();
-	}
 	if (dragSrc[0] != dragDest[0]) {
-        var newCategory = dragDest.parent().attr("id").substring(9);
         var itemId = draggedItem.attr("id").substring(5);
-		update(newCategory, itemId);
+        var destination = dragDest.parent().attr("id");
+        if (destination.substring(0, 8) == "category") {
+        	destination = destination.substring(9);
+			updateCategoryItem(destination, itemId);
+        } else {
+        	destination = destination.substring(7);
+        	updatePlayerItem(destination, itemId);
+        };
 	}
 }
