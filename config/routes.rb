@@ -3,6 +3,7 @@ Goblin::Application.routes.draw do
   
   match '/profile', to: 'user#show', via: 'get', as: 'profile'
   match '/friends/:id/flag', to: 'user#get_update_flag', via: 'post', as: 'get_update_flag'
+  match '/friends/:id/remove_friendship/:friend_id', to: 'user#remove_friendship', via: 'post', as: 'remove_friendship'
   
   match '/game/:id', to: 'games#show', via: 'get', as: 'game'
   match '/game/update_category/:category_id/in_item/:item_id', 

@@ -5,9 +5,12 @@
 		<div class="logo">
 			<%= link_to "GOBLIN", profile_path %>
 		</div>
-		<div class="account-links">Links: <span class="click-friends <%= "updated" if @user.update_flag? %>">Friends</span> | Settings | 
-		    <%= link_to "Logout", sign_out_path, method: "post" %></div>
-		<div class="friends"></div>
+		<div class="account-links">Links: 
+		    <span class="click-friends <%= "updated" if @user.update_flag? %>">Friends</span> | Settings | 
+		    <%= link_to "Logout", sign_out_path, method: "post" %>
+		    <div class="friends"></div>
+	    </div> <!-- .account-links -->
+		
 	<% end %>
 </div> <!-- .header -->
 <style>  .updated { color: red }  </style>
@@ -30,7 +33,9 @@
                .done(function(data) {
                    if (data.update == true) {
                        $(".click-friends").removeClass("updated");
-                       $(".friends").replaceWith("<%= escape_javascript(render(partial: 'layouts/friends')) %>"); 
+                       $(".friends").replaceWith("<%= 
+                        escape_javascript(render(:partial => 'layouts/friends')) 
+                       %>"); 
                    }
                });
            

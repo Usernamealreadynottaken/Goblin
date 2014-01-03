@@ -15,6 +15,16 @@ body {
 		.account-links {
 		  display: inline-block;
 		  float: right;
+		  
+		  .friends {
+		    position: absolute;
+		    z-index: 5;
+		    background: #cccccc;
+		    
+		    .accept, .decline {
+		      cursor: pointer;
+		    }
+		  }
 		}
 		
 	} // .header
