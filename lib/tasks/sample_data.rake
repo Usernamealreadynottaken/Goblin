@@ -108,6 +108,7 @@ namespace :db do
                 user_id: user.id)
 
     Item.create(name: "Potion (blue)",
+                magic_name: "Cure light wounds potion",
                 properties: "Cure Light Wounds (level 3)",
                 description: "A blue potion.",
                 game_category_id: cat1.id,
@@ -123,6 +124,7 @@ namespace :db do
                 user_id: user.id)
 
     Item.create(name: "Bone wand",
+                magic_name: "Obscuring Mist wand",
                 properties: "Obscuring Mist (24 charges)",
                 description: "A radius bone of small humanoid with strange marks made with ink.",
                 game_category_id: cat2.id,
@@ -144,7 +146,7 @@ namespace :db do
     # Category 3
     Item.create(name: "Scarlet Breastplate",
                 properties: "+2\n" +
-                            "When covered with blood (GM decision, typically when receiving slashing or piercing damage)" +
+                            "When covered with blood (GM decision, typically when receiving slashing or piercing damage) " +
                             "armors enhancement bonus is increased to +3 until the blood is cleaned or dries (GM decision)",
                 description: "A scarlet colored breastplate with white painted tear or drop of some kind on the back.",
                 identified: true,

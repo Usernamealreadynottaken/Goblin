@@ -48,6 +48,49 @@
       display: inline-block;
       float: right;
     } // .item-menu
+    
+    .item-hover {
+      background: white;
+      border: 1px solid black;
+      padding: 7px;
+      display: none;
+      position: relative;
+      
+      .item-hover-magicname {
+        width: 100%;
+        text-align: center;
+        font-size: 18px;
+      }
+      
+      .item-hover-name {
+        width: 100%;
+        text-align: center;
+        font-size: 14px;
+      }
+      
+      .item-hover-name.only {
+        font-size: 18px !important;
+      }
+      
+      .item-hover-properties {
+        margin: 10px 0 0 0;
+        
+        ul {
+          padding: 0 0 0 25px;
+        }
+        
+      } // .item-hover-properties
+      
+      .item-hover-description {
+        margin: 10px 0 0 0;
+      }
+      
+      .item-hover-identified {
+        display: none;
+      }
+            
+    } // .item-hover
+    
   } // .item
   
   .itemform-container {
@@ -78,6 +121,8 @@
       textarea {
         resize: none;
         height: 100px;
+        font-family: Arial, sans-serif;
+        width: 337px;
       }
       
       .identified {

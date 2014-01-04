@@ -18,6 +18,7 @@
 				<%= form_for(:item, html: {class: "itemform-form"}) do |f| %>
 				
 					<%= f.hidden_field :id, class: "itemform-id" %>
+					<%= f.hidden_field :category_id, class: "itemform-categoryid" %>
 				
 					<%= f.label :name, "Name:" %><br>
 					<%= f.text_field :name, class: "itemform-name" %><br>
@@ -64,9 +65,26 @@
 					<% if !category.gm_items.empty? %>
     					<% category.gm_items.each do |item| %>
     						<li class="category-item item" id="item-<%= item.id %>">
-    							<div class="item-name"><%= item.name %></div>
+    							<div class="item-name"><%= if !item.magic_name.blank?
+    								item.magic_name 
+    							else 
+    								item.name 
+    							end %></div>
     							<div class="item-menu">Edit Delete</div>
-    						</li <!-- .category-item .item -->
+    							<div class="item-hover">
+    								<div class="item-hover-magicname"><%= item.magic_name %></div>
+    								<div class="item-hover-name<%= " only" if item.magic_name.blank? %>"><%= item.name %></div>
+    								<div class="item-hover-properties"><% if !item.properties.blank? %>
+    									<ul>
+    									<% item.properties.split("\n").each do |property| %>
+    										<li><%= property %></li>
+    									<% end %>
+    									</ul>
+    								<% end %></div>
+    								<div class="item-hover-description"><%= item.description %></div>
+    								<input type="checkbox" class="item-hover-identified"<%= " checked" if item.identified? %>>
+    							</div> <!-- .item-hover -->
+    						</li> <!-- .category-item .item -->
     					<% end %>
 					<% end %>
 					   <li class="emptyMessage" 
@@ -98,8 +116,25 @@
     					<% if !player.items_in(@game).empty? %>
         					<% player.items_in(@game).each do |item| %>
         						<li class="inventory-item item " id="item-<%= item.id %>">
-        							<div class="item-name"><%= item.name %></div>
+        							<div class="item-name"><%= if !item.magic_name.blank?
+        								item.magic_name
+        							else
+        								item.name
+        							end %></div>
         							<div class="item-menu">Edit Delete</div>
+        							<div class="item-hover">
+	    								<div class="item-hover-magicname"><%= item.magic_name %></div>
+	    								<div class="item-hover-name<%= " only" if item.magic_name.blank? %>"><%= item.name %></div>
+	    								<div class="item-hover-properties"><% if !item.properties.blank? %>
+	    									<ul>
+	    									<% item.properties.split("\n").each do |property| %>
+	    										<li><%= property %></li>
+	    									<% end %>
+	    									</ul>
+	    								<% end %></div>
+	    								<div class="item-hover-description"><%= item.description %></div>
+	    								<input type="checkbox" class="item-hover-identified"<%= " checked" if item.identified? %>>
+	    							</div> <!-- .item-hover -->
         						</li> <!-- .inventory-item .item -->
         					<% end %>
                         <% end %>
@@ -122,6 +157,23 @@
 </div> <!-- .content -->
 
 <script>
+
+	$(document).ready(function() {
+    	$(".itemform-container").toggle();
+    	
+    	// For add/edit item form
+    	window.itemAddUrl = "<%= url_for(item_add_path) %>";
+    	window.itemUpdateBaseUrl = "<%= url_for(item_update_path("item_id")) %>";
+    	window.selectedCategoryId = $(".category").first().attr("id").split("-")[1]
+    	window.selectedCategoryName = $(".category").first().find(".category-title").text();
+    	window.addEditMode = "none";
+    	
+    	// Hovers
+    	$(".item").hover(function() {
+    		$(this).find(".item-hover").toggle();
+    	});
+    });
+
     function updateCategoryItem(destination, itemId) {
         var url = "<%= url_for(update_category_in_item_path('newCategory', 'itemId')) %>";
         url = url.replace("newCategory", destination).replace("itemId", itemId);
@@ -149,19 +201,16 @@
      * should that need arise.
      */
     
-    $(document).ready(function() {
-    	$(".itemform-container").toggle();
-    	
-    	var itemAddUrl = "<%= url_for(item_add_path) %>";
-    	var itemUpdateBaseUrl = "<%= url_for(item_update_path("item_id")) %>";
-    });
-    
     function prepareFormAdd() {
+    	// Select mode
+    	window.addEditMode = "add";
+    	
     	// Form URL
     	$(".itemform-form").attr("action", window.itemAddUrl);
     	
     	// Form fields
     	$(".itemform-id").val("");
+    	$(".itemform-categoryid").val(window.selectedCategoryId);
     	$(".itemform-name").val("");
     	$(".itemform-magicname").val("");
     	$(".itemform-properties").val("");
@@ -169,14 +218,45 @@
     	$(".itemform-identified").attr("checked", false);
     	
     	// Titles etc.
-    	$(".itemform-title").text("Add new item");
+    	$(".itemform-title").html("Adding item to:<br>" + window.selectedCategoryName);
     	$(".itemform-submit").text("Add item");
     	if (!$(".itemform-container").is(":visible")) {
     		$(".itemform-container").toggle();
     	}
     }
     
-    function prepareFormUpdate() {
+    function prepareFormUpdate(clicked) {
+    	// Select mode
+    	window.addEditMode = "edit";
+    	
+    	// Get item id
+    	clickedId = $(clicked).attr("id").split("-")[1];
+    	
+    	// Form URL
+    	$(".itemform-form").attr("action", window.itemUpdateBaseUrl.replace("item_id", clickedId));
+    	
+    	// Form fields
+    	var fields = $(clicked).find(".item-hover");
+    	
+    	$(".itemform-id").val(clickedId);
+    	$(".itemform-categoryid").val("");
+    	$(".itemform-name").val(fields.find(".item-hover-name").text());
+    	$(".itemform-magicname").val(fields.find(".item-hover-magicname").text());
+    	$(".itemform-description").text(fields.find(".item-hover-description").text());
+    	$(".itemform-identified").prop("checked", fields.find(".item-hover-identified").prop("checked"));
+    	
+    	var properties = fields.find(".item-hover-properties").find("ul").first();
+    	var propertiesLength = properties.find("li").length;
+    	// $(".itemform-properties").val("");
+    	var propertiesNewText = "";
+    	properties.find("li").each(function(index, element) {
+    		propertiesNewText += $(element).text();
+    		if (index < propertiesLength - 1) {
+    			propertiesNewText += "\n";
+    		}
+    	});
+    	$(".itemform-properties").val(propertiesNewText);
+    	
     	$(".itemform-title").text("Edit item");
     	$(".itemform-submit").text("Edit item");
     	if (!$(".itemform-container").is(":visible")) {
@@ -184,8 +264,66 @@
     	}
     }
     
+    function updateItem(newData) {
+    	// Find item to update in DOM
+    	var item = $("#item-" + newData.id);
+    	if (item.length) {
+    		
+    		// Name on item label    		
+    		if (!newData.magic_name) {
+    			item.find(".item-name").text(newData.name);
+    		} else {
+    			item.find(".item-name").text(newData.magic_name);
+    		}
+    		
+    		// Hover stuff except item properties
+    		var hover = item.find(".item-hover");
+    		var hover_name = hover.find(".item-hover-name");
+    		
+    		hover_name.text(newData.name);
+    		hover.find(".item-hover-magicname").text(newData.magic_name);
+    		if (!newData.magic_name) {
+    			if (!hover_name.hasClass("only")) {
+    				hover_name.addClass("only");
+    			}
+    		} else {
+    			if (hover_name.hasClass("only")) {
+    				hover_name.removeClass("only");
+    			}
+    		}
+    		
+    		hover.find(".item-hover-description").text(newData.description);
+    		
+    		var hover_identified = hover.find(".item-hover-identified");
+    		if (newData.identified == "1") {
+    			hover_identified.prop("checked", true);
+    		} else {
+    			hover_identified.prop("checked", false);
+    		}
+    		
+    		// Properties
+    		var propertiesUl = hover.find(".item-hover-properties").find("ul").first();
+    		propertiesUl.empty();
+    		$.each(newData.properties.split("\n"), function(index, element) {
+    			propertiesUl.append("<li>" + element + "</li>\n");
+    		});
+    	}
+    }
+    
+    $(".category").click(function() {
+    	window.selectedCategoryId = $(this).attr("id").split("-")[1];
+    	window.selectedCategoryName = $(this).find(".category-title").text();
+    	
+    	if (window.addEditMode == "add") {
+	    	if ($(".itemform-container").is(":visible")) {
+	    		$(".itemform-categoryid").val(window.selectedCategoryId);
+	    		$(".itemform-title").html("Adding item to:<br>" + window.selectedCategoryName);
+	    	}
+	    }
+    });
+    
     $(".item").click(function() {
-    	prepareFormUpdate();
+    	prepareFormUpdate(this);
     });
     
     $(".gm-add-item").click(function() {
@@ -197,9 +335,16 @@
     });
     
     $(".itemform-submit").click(function() {
-    	$(".itemform-form").attr('action', "<%= url_for(item_add_path) %>")
     	$(".itemform-form").ajaxForm(function(data) {
-    		alert(data);
+    		if (data != null && typeof data === "object") {
+    			if (data.mode == "edit") {
+    				updateItem(data);
+    			} else {
+    				// TODO: Add item
+    			}
+    		} else {
+    			// Item id was not passed to the server for some reason.
+    		}
     	});
     	$(".itemform-form").submit();
     });

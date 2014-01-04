@@ -13,6 +13,9 @@ class GamesController < ApplicationController
   
   def show
     @game = Game.find(params[:id])
+    if current_user != @game.gm
+      render 'player'
+    end
   end
   
   def update_category_in_item
