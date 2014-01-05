@@ -1,21 +1,27 @@
 class ItemsController < ApplicationController
   
   def add
-    render text: "Adding item!"
-    puts "Name: #{params[:item][:name]}"
-    puts "Magic name: #{params[:item][:magic_name]}"
-    puts "Properties: #{params[:item][:properties]}"
-    puts "Description: #{params[:item][:description]}"
-    if params[:item][:identified] == "1"
-      puts "Identified"
-    else
-      puts "Unidentified"
+    pitem = params[:item]
+    if pitem[:category_id]
+      category = GameCategory.find(pitem[:category_id])
+      identified_b = true
+      identified_b = false if pitem[:identified] == "0"
+      item = Item.create(name: pitem[:name],
+                         magic_name: pitem[:magic_name],
+                         properties: pitem[:properties],
+                         description: pitem[:description],
+                         identified: identified_b,
+                         game_category_id: category.id,
+                         user_id: category.game.gm.id)
+      pitem[:id] = item.id
+      pitem[:mode] = "add"
+      render json: pitem
     end
+    "fail"
   end
   
   def update
     pitem = params[:item]
-    puts pitem[:identified]
     if pitem[:id]
       item = Item.find(pitem[:id])
       identified_b = true

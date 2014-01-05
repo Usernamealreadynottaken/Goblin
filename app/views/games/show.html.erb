@@ -310,6 +310,62 @@
     	}
     }
     
+    function addItem(newData) {
+    	var category = $("#category-" + newData.category_id);
+    	if (category.length) {
+    		var categoryUl = category.find(".category-items");
+    		
+    		// Hide empty li if we're adding to empty category
+    		var empty = categoryUl.find(".emptyMessage"); 
+    		if (!empty.css("display") != "none") {
+    			empty.css("display", "none");
+    		}
+    		
+    		// Item label
+    		categoryUl.append('<li class="category-item item" id="item-' + newData.id + '">\n</li>');
+    		var item = categoryUl.find("#item-" + newData.id);
+    		
+    		// Item name in label
+    		if (newData.magic_name) {
+    			item.append('<div class="item-name">' + newData.magic_name + '</div>');
+    		} else {
+    			item.append('<div class="item-name">' + newData.name + '</div>');
+    		}
+    		
+    		// Item menu
+    		// TODO
+    		item.append('<div class="item-menu">Edit Delete</div>');
+    		
+    		// Hover
+    		// We just need to create the tag structure without content, then we can use
+    		// updateItem function to fill in content for us. This way we avoid clutter
+    		// caused by, for example, concatenating strings.
+    		item.append('<div class="item-hover">\n</div>');
+    		var hover = item.find(".item-hover").first();
+    		
+    		// Stuff inside hover
+    		hover.append('<div class="item-hover-magicname"></div>');
+    		
+    		var nameClasses = "item-hover-name";
+    		if (!newData.magic_name) {
+    			nameClasses += " only";
+    		}
+    		hover.append('<div class="' + nameClasses + '"></div>');
+    		
+    		hover.append('<div class="item-hover-properties">\n<ul>\n</ul>\n</div>');
+    		hover.append('<div class="item-hover-description"></div>');
+    		hover.append('<input type="checkbox" class="item-hover-identified">');
+    		
+    		// Use updateItem to fill in data
+    		updateItem(newData);
+    		
+    		// Just need to bind hover function to the new div
+    		$("#item-" + newData.id).hover(function() {
+    			$(this).find(".item-hover").toggle();
+    		});
+    	}
+    }
+    
     $(".category").click(function() {
     	window.selectedCategoryId = $(this).attr("id").split("-")[1];
     	window.selectedCategoryName = $(this).find(".category-title").text();
@@ -340,10 +396,8 @@
     			if (data.mode == "edit") {
     				updateItem(data);
     			} else {
-    				// TODO: Add item
+    				addItem(data);
     			}
-    		} else {
-    			// Item id was not passed to the server for some reason.
     		}
     	});
     	$(".itemform-form").submit();
