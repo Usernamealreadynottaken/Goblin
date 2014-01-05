@@ -12,7 +12,13 @@ class UserController < ApplicationController
   def get_update_flag
     user = User.find(params[:id])
     update_flag = user.update_flag
-    render json: { update: update_flag }
+    render json: { 
+      update: update_flag,
+      current_user: user,
+      friends: user.get_active_friends,
+      pending: user.get_pending_friends,
+      invited: user.get_invited_friends
+    }
     user.update_attribute(:update_flag, false)
   end
   

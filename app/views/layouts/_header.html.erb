@@ -22,7 +22,12 @@
 
     $(".click-friends").click(function() {
        $(".friends").replaceWith("<%= 
-        escape_javascript(render(partial: 'layouts/friends')) 
+        escape_javascript(render(:partial => 'layouts/friends', :locals => { 
+            :user => @user,
+            :friends => @friends,
+            :pending => @pending,
+            :invited => @invited
+        } )) 
        %>");
        interval = setInterval(function() {
            
@@ -34,7 +39,12 @@
                    if (data.update == true) {
                        $(".click-friends").removeClass("updated");
                        $(".friends").replaceWith("<%= 
-                        escape_javascript(render(:partial => 'layouts/friends')) 
+                        escape_javascript(render(:partial => 'layouts/friends', :locals => {
+                            :user => @current_user,
+                            :friends => @friends,
+                            :pending => @pending,
+                            :invited => @invited
+                        } ))
                        %>"); 
                    }
                });

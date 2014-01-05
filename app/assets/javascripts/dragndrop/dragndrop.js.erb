@@ -6,7 +6,7 @@ $(".sortable").sortable({
 	connectWith: ".sortable",
 	start: startDragging,
 	stop: stopDragging,
-	items: "li:not(.emptyMessage)",
+	items: "> li:not(.emptyMessage)",
 	receive: function(event, ui) {
 		$('li.emptyMessage', this).hide();
 	     

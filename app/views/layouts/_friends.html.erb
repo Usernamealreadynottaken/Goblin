@@ -1,21 +1,21 @@
 <div class="friends">
     <span class="close">Close</span>
-    <% if @user && @friends.count + @pending.count + @invited.count > 0 %>
+    <% if user && friends.count + pending.count + invited.count > 0 %>
     
         <p>Your friends</p>
         <ul>
-            <% @friends.each do |friend| %>
+            <% friends.each do |friend| %>
             <li id="<%= friend.id %>">
                 <span class="name"><%= friend.name %></span>
             </li>
             <% end %>
-            <% @pending.each do |friend| %>
+            <% pending.each do |friend| %>
             <li id="<%= friend.id %>">
                 <span class="name"><%= friend.name %></span>
                 <span><span class="accept">accept</span> / <span class="decline">decline</span></span>
             </li>
             <% end %>
-            <% @invited.each do |friend| %>
+            <% invited.each do |friend| %>
             <li id="<%= friend.id %>">
                 <span class="name"><%= friend.name %></span>
                 <span>waiting...</span>
@@ -40,7 +40,7 @@
         
         $(".decline").click(function() {
             var friendId = $(this).parent().parent().attr("id");
-            var userId = <%= @user.id %>;
+            var userId = <%= user.id %>;
             
             var url = "<%= url_for(remove_friendship_path('userId', 'friendId')) %>";
             url = url.replace("userId", userId).replace("friendId", friendId);
