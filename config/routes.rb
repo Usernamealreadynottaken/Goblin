@@ -16,7 +16,10 @@ Goblin::Application.routes.draw do
   match '/logout', to: 'sessions#destroy', via: 'post', as: 'sign_out'
   
   match '/item/add', to: 'items#add', via: 'post', as: 'item_add'
-  match '/item/update/:id', to: 'items#update', via: 'post', as: 'item_update'
+  match '/item/update', to: 'items#update', via: 'post', as: 'item_update'
+  
+  match '/gamecat/add', to: 'game_categories#add', via: 'post', as: 'game_category_add'
+  match '/gamecat/update', to: 'game_categories#update', via: 'post', as: 'game_category_update'
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

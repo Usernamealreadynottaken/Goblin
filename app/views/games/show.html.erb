@@ -11,7 +11,7 @@
 	<div class="game-content">
 		
 		<!-- Add/edit item form -->
-		<div class="itemform-container">
+		<div class="itemform-container dialog">
 			<div class="itemform-close-button">Close</div>
 			<div class="itemform-title">Title</div>			
 			<div class="itemform-form-container">
@@ -44,6 +44,27 @@
 				<% end %>
 			</div> <!-- .itemform-form-container -->
 		</div> <!-- .itemform-container -->
+		
+		<!-- Add/edit category form -->
+		<div class="catform-container dialog">
+			<div class="catform-close-button">Close</div>
+			<div class="catform-title">Title</div>
+			<div class="catform-form-container">
+				<%= form_for(:category, html: {class: "catform-form" }) do |f| %>
+				
+					<%= f.hidden_field :id, class: "catform-id" %>
+					<%= f.hidden_field :game_id, class: "catform-gameid" %>
+					
+					<%= f.label :name, "Name:" %><br>
+					<%= f.text_field :name, class: "catform-name" %><br>
+					
+					<div class="submit">
+						<a class="catform-submit">Add/edit</a>
+					</div>
+				
+				<% end %>
+			</div> <!-- .catform-form-container -->
+		</div> <!-- .catform-container -->
 	
 		<!-- GMs game menu -->
 		<div class="gm-container">
@@ -160,13 +181,21 @@
 
 	$(document).ready(function() {
     	$(".itemform-container").toggle();
+    	$(".catform-container").toggle();
     	
     	// For add/edit item form
     	window.itemAddUrl = "<%= url_for(item_add_path) %>";
-    	window.itemUpdateBaseUrl = "<%= url_for(item_update_path("item_id")) %>";
-    	window.selectedCategoryId = $(".category").first().attr("id").split("-")[1]
-    	window.selectedCategoryName = $(".category").first().find(".category-title").text();
+    	window.itemUpdateUrl = "<%= url_for(item_update_path) %>";
+    	if ($(".gm-game-categories > li").length > 0) {
+	    	window.selectedCategoryId = $(".category").first().attr("id").split("-")[1];
+	    	window.selectedCategoryName = $(".category").first().find(".category-title").text();
+    	}
     	window.addEditMode = "none";
+    	
+    	// For add/edit category form
+    	window.catAddUrl = "<%= url_for(game_category_add_path) %>";
+    	window.catUpdateUrl = "<%= url_for(game_category_update_path) %>";
+    	window.gameId = "<%= @game.id %>";
     	
     	// Hovers
     	$(".item").hover(function() {
@@ -201,7 +230,7 @@
      * should that need arise.
      */
     
-    function prepareFormAdd() {
+    function prepareItemFormAdd() {
     	// Select mode
     	window.addEditMode = "add";
     	
@@ -221,19 +250,20 @@
     	$(".itemform-title").html("Adding item to:<br>" + window.selectedCategoryName);
     	$(".itemform-submit").text("Add item");
     	if (!$(".itemform-container").is(":visible")) {
+    		$(".dialog").not(".itemform-container").hide();
     		$(".itemform-container").toggle();
     	}
     }
     
-    function prepareFormUpdate(clicked) {
+    function prepareItemFormUpdate(clicked) {
     	// Select mode
     	window.addEditMode = "edit";
     	
     	// Get item id
-    	clickedId = $(clicked).attr("id").split("-")[1];
+    	var clickedId = $(clicked).attr("id").split("-")[1];
     	
     	// Form URL
-    	$(".itemform-form").attr("action", window.itemUpdateBaseUrl.replace("item_id", clickedId));
+    	$(".itemform-form").attr("action", window.itemUpdateUrl);
     	
     	// Form fields
     	var fields = $(clicked).find(".item-hover");
@@ -260,6 +290,7 @@
     	$(".itemform-title").text("Edit item");
     	$(".itemform-submit").text("Edit item");
     	if (!$(".itemform-container").is(":visible")) {
+    		$(".dialog").not(".itemform-container").hide();
     		$(".itemform-container").toggle();
     	}
     }
@@ -359,31 +390,28 @@
     		// Use updateItem to fill in data
     		updateItem(newData);
     		
-    		// Just need to bind hover function to the new div
+    		// Just need to bind hover and click functions to the new div
     		$("#item-" + newData.id).hover(function() {
     			$(this).find(".item-hover").toggle();
+    		});
+    		$("#item-" + newData.id).click(function() {
+    			prepareItemFormUpdate(this);
     		});
     	}
     }
     
-    $(".category").click(function() {
-    	window.selectedCategoryId = $(this).attr("id").split("-")[1];
-    	window.selectedCategoryName = $(this).find(".category-title").text();
-    	
-    	if (window.addEditMode == "add") {
-	    	if ($(".itemform-container").is(":visible")) {
-	    		$(".itemform-categoryid").val(window.selectedCategoryId);
-	    		$(".itemform-title").html("Adding item to:<br>" + window.selectedCategoryName);
-	    	}
-	    }
-    });
-    
     $(".item").click(function() {
-    	prepareFormUpdate(this);
+    	prepareItemFormUpdate(this);
     });
     
     $(".gm-add-item").click(function() {
-    	prepareFormAdd();
+    	if ($(".gm-game-categories > li").length > 0) {
+    		prepareItemFormAdd();
+    	} else {
+    		
+    		// TODO: Probably we'll have some error box/window in the future.
+    		alert("Add some categories first!");
+    	}
     });
     
     $(".itemform-close-button").click(function() {
@@ -402,4 +430,123 @@
     	});
     	$(".itemform-form").submit();
     });
+    
+    /* CATEGORY ADD/EDIT FORM JS */
+   
+    function prepareCatFormAdd() {
+    	// Form url
+    	$(".catform-form").attr("action", window.catAddUrl);
+    	
+    	// Form fields
+    	$(".catform-id").val("");
+    	$(".catform-gameid").val(window.gameId);
+    	$(".catform-name").val("");
+    	
+    	// Titles etc.
+    	$(".catform-title").text("Add new category");
+    	$(".catform-submit").text("Add category");
+    	if (!$(".catform-container").is(":visible")) {
+    		$(".dialog").not(".catform-container").hide();
+    		$(".catform-container").toggle();
+    	}
+    }
+   
+    function prepareCatFormUpdate(clicked) {
+    	// Form url
+    	$(".catform-form").attr("action", window.catUpdateUrl);
+    	
+    	// Get clicked id
+    	var clickedId = $(clicked).parent().attr("id").split("-")[1];
+    	
+    	// Form fields
+    	$(".catform-id").val(clickedId);
+    	$(".catform-name").val($(clicked).text());
+    	
+    	// Titles etc.
+    	$(".catform-title").text("Edit category");
+    	$(".catform-submit").text("Edit category");
+    	if (!$(".catform-container").is(":visible")) {
+    		$(".dialog").not(".catform-container").hide();
+    		$(".catform-container").toggle();
+    	}
+    }
+    
+    function addCategory(newData) {
+    	// If there are no categories then remove empty class
+    	// from categories container. Also clear it from text.
+    	if ($(".gm-game-categories > li").length == 0) {
+    		$(".gm-game-categories").removeClass("empty");
+    		$(".gm-game-categories").empty();
+    	}
+    	
+    	// Add new category
+    	var cats = $(".gm-game-categories");
+    	cats.append('<li>\n<div class="category" id="category-' + newData.id + '">\n</div>\n</li>');
+    	
+    	var cat = cats.find("#category-" + newData.id);
+    	
+    	// Title
+    	cat.append('<div class="category-title">' + newData.name + '</div>');
+    	
+    	// List for items (initially empty)
+    	cat.append('<ul class="category-items sortable empty ui-sortable">\n<li class="emptyMessage">Empty</li>\n</ul>');
+    	
+    	// If it was a first category then selectedCategoryId and selectedCategoryName
+    	// are not set!
+    	if ($(".gm-game-categories > li").length == 1) {
+    		window.selectedCategoryId = $(".category").first().attr("id").split("-")[1];
+	    	window.selectedCategoryName = $(".category").first().find(".category-title").text();
+    	}
+    	
+    	// We have to bind click function to the newly added category:
+    	$("#category-" + newData.id).find(".category-title").click(function() {
+    		categoryClickHandle(this);
+    	});
+    }
+    
+    function updateCategory(newData) {
+    	var cat = $("#category-" + newData.id);
+    	
+    	if (cat.length) {
+    		cat.find(".category-title").text(newData.name);
+    	}
+    }
+    
+    function categoryClickHandle(clicked) {
+    	window.selectedCategoryId = $(clicked).parent().attr("id").split("-")[1];
+    	window.selectedCategoryName = $(clicked).parent().find(".category-title").text();
+    	
+    	if ($(".itemform-container").is(":visible") && window.addEditMode == "add") {
+    		$(".itemform-categoryid").val(window.selectedCategoryId);
+    		$(".itemform-title").html("Adding item to:<br>" + window.selectedCategoryName);
+	    } else {
+	    	prepareCatFormUpdate(clicked);
+	    }
+    }
+   
+    $(".category-title").click(function() {
+    	categoryClickHandle(this);
+    });
+    
+    $(".gm-add-category").click(function() {
+    	prepareCatFormAdd();
+    });
+    
+    $(".catform-close-button").click(function() {
+    	$(".catform-container").toggle();
+    });
+    
+    $(".catform-submit").click(function() {
+    	$(".catform-form").ajaxForm(function(data) {
+    		if (data != null && typeof data === "object") {
+				if (data.mode == "edit") {
+					updateCategory(data);
+				} else {
+					addCategory(data);	
+				}
+    		}
+    	});
+    	$(".catform-form").submit();
+    });
+   
 </script>

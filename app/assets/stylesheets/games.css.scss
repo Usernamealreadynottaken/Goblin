@@ -151,6 +151,52 @@
     
   } // .itemform-container
   
+  .catform-container {
+    position: absolute;
+    border: 1px solid black;
+    background: white;
+    padding: 5px;
+    width: 350px;
+    left: 50%;
+    margin-left: -175px;
+    
+    .catform-close-button {
+      width: 100%;
+      text-align: right;
+    }
+    
+    .catform-title {
+      width: 100%;
+      text-align: center;
+    }
+    
+    .catform-form-container {
+            
+      input {
+        width: 337px;
+      }
+      
+      textarea {
+        resize: none;
+        height: 100px;
+        font-family: Arial, sans-serif;
+        width: 337px;
+      }
+      
+      .submit {
+        width: 100%;
+        text-align: center;
+      
+        input[type="submit"] {
+          width: auto;
+        }
+      
+      }
+      
+    } // .catform-form-container
+    
+  } // .catform-container
+  
   .gm-container {
     display: inline-block;
     width: 400px;
