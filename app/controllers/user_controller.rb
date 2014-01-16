@@ -12,13 +12,16 @@ class UserController < ApplicationController
   def get_update_flag
     user = User.find(params[:id])
     update_flag = user.update_flag
-    render json: { 
-      update: update_flag,
-      current_user: user,
-      friends: user.get_active_friends,
-      pending: user.get_pending_friends,
-      invited: user.get_invited_friends
-    }
+    render :json => { 
+      :update => update_flag,
+      :projects => render_to_string( 
+        :partial => 'layouts/friends',
+        :locals => { 
+          :user => user,
+          :friends => user.get_active_friends,
+          :pending => user.get_pending_friends,
+          :invited => user.get_invited_friends }) }, 
+        :status => :ok
     user.update_attribute(:update_flag, false)
   end
   
@@ -30,7 +33,9 @@ class UserController < ApplicationController
     ]).first
     friendship.destroy
     user = User.find(params[:id])
+    friend = User.find(params[:friend_id])
     user.update_attribute(:update_flag, true)
+    friend.update_attribute(:update_flag, true)
   end
   
 end
