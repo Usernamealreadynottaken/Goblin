@@ -16,6 +16,10 @@ body {
 		  display: inline-block;
 		  float: right;
 		  
+		  .updated { 
+		    color: red 
+		  }
+		  
 		  .friends {
 		    position: absolute;
 		    z-index: 5;

@@ -3,6 +3,11 @@
     <% if user && friends.count + pending.count + invited.count > 0 %>
     
         <p>Your friends</p>
+        <form class="invite">
+            <input class="invite-field" type="text" placeholder="Enter name">
+            <button>Invite</button>
+            <p></p>
+        </form>
         <ul>
             <% friends.each do |friend| %>
             <li id="<%= friend.id %>">
@@ -34,6 +39,30 @@
             $(".friends").empty();
         });
         
+        $(".invite").submit(function() {
+            var friend = $(".invite-field").val();
+            var userId = <%= user.id %>;
+            
+            if (friend.length > 0) {
+                var url = "<%= url_for(create_friendship_path("userId", "friendName")) %>";
+                url = url.replace("userId", userId).replace("friendName", friend);
+                
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                })
+                    .done(function(data) {
+                        if (data.result != true) {
+                            $(".invite p").html(data.result);
+                        } else {
+                            $(".invite p").html();
+                        }
+                    });
+            }
+            
+            return false; // prevents default submit
+        });
+        
         $(".accept").click(function() {
             alert("accept");    
         });
@@ -42,7 +71,7 @@
             var friendId = $(this).parent().parent().attr("id");
             var userId = <%= user.id %>;
             
-            var url = "<%= url_for(remove_friendship_path('userId', 'friendId')) %>";
+            var url = "<%= url_for(remove_friendship_path("userId", "friendId")) %>";
             url = url.replace("userId", userId).replace("friendId", friendId);
         
             $.ajax({
