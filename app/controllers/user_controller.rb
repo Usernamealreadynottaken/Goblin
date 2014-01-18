@@ -25,6 +25,18 @@ class UserController < ApplicationController
     user.update_attribute(:update_flag, false)
   end
   
+  def accept_friendship
+    render :nothing => true
+    friendship = Friendship.find(:first, :conditions => [
+      '(user_id = ? AND friend_id = ?) OR (user_id = ? AND friend_id = ?)',
+      params[:id], params[:friend_id], params[:friend_id], params[:id]
+    ])
+    friendship.update_attribute(:request, "active")
+    user = User.find(params[:id])
+    friend = User.find(params[:friend_id])
+    set_friendship_flags(user, friend)
+  end
+  
   def create_friendship
     user = User.find(params[:id])
     friend = User.find(:first, :conditions => [

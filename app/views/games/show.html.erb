@@ -159,7 +159,6 @@
 <script>
 
 	$(document).ready(function() {
-    	$(".itemform-container").toggle();
     	
     	// For add/edit item form
     	window.itemAddUrl = "<%= url_for(item_add_path) %>";
@@ -167,11 +166,6 @@
     	window.selectedCategoryId = $(".category").first().attr("id").split("-")[1]
     	window.selectedCategoryName = $(".category").first().find(".category-title").text();
     	window.addEditMode = "none";
-    	
-    	// Hovers
-    	$(".item").hover(function() {
-    		$(this).find(".item-hover").toggle();
-    	});
     });
 
     function updateCategoryItem(destination, itemId) {

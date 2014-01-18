@@ -24,12 +24,46 @@ body {
 		    position: absolute;
 		    z-index: 5;
 		    background: #cccccc;
+		    padding: 0;
+		    
+		    .friends-wrapper {
+		      padding: 5px;
+		    }
+		    
+		    ul {
+		      list-style: none;
+		      margin: 0;
+		      padding: 0;
+		      
+		      .befriended {
+		        color: #008800;
+		      }
+		      
+		      .pending {
+		        color: #dd6600;
+		      }
+		      
+		      .invited {
+		        color: #990066;
+		      }
+		      
+		    }
 		    
 		    .accept, .decline {
 		      cursor: pointer;
 		    }
+		  } // .friends
+		  
+		  .remove {
+		    cursor: pointer;
 		  }
-		}
+		  
+		  .remove-yes, .remove-no {
+		    display: none;
+		    cursor: pointer;
+		  }
+		  
+		} // .account-links
 		
 	} // .header
 	
