@@ -13,22 +13,23 @@
 		
 	<% end %>
 </div> <!-- .header -->
-<style>  .updated { color: red }  </style>
 
 <% if @user %>
 <script>
 
     var interval;
-
-    $(".click-friends").click(function() {
-       $(".friends").replaceWith("<%= 
+    friends = "<%= 
         escape_javascript(render(:partial => 'layouts/friends', :locals => { 
             :user => @user,
             :friends => @friends,
             :pending => @pending,
             :invited => @invited
         } )) 
-       %>");
+    %>";
+    
+    $(".click-friends").click(function() {
+        
+       $(".friends").replaceWith(friends);
        interval = setInterval(function() {
            
            $.ajax({
@@ -38,14 +39,8 @@
                .done(function(data) {
                    if (data.update == true) {
                        $(".click-friends").removeClass("updated");
-                       $(".friends").replaceWith("<%= 
-                        escape_javascript(render(:partial => 'layouts/friends', :locals => {
-                            :user => @current_user,
-                            :friends => @friends,
-                            :pending => @pending,
-                            :invited => @invited
-                        } ))
-                       %>"); 
+                       friends = data.projects;
+                       $(".friends").replaceWith(friends);
                    }
                });
            

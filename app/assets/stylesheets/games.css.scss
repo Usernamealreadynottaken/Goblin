@@ -38,6 +38,19 @@
     border: 3px solid #333333;
     cursor: move;
     text-align: left;
+    position: relative;
+    
+    &:hover .item-hover {
+      display: block;
+    }
+    
+    &:active {
+      background: #668866;
+      
+      &:hover .item-hover {
+        display: none;
+      }
+    }
     
     .item-name {
       display: inline-block;                  
@@ -54,7 +67,13 @@
       border: 1px solid black;
       padding: 7px;
       display: none;
-      position: relative;
+      position: absolute;
+      z-index: 2;
+      top: 110%;
+      
+      &:hover {
+        display: none;
+      }
       
       .item-hover-magicname {
         width: 100%;
@@ -94,6 +113,7 @@
   } // .item
   
   .itemform-container {
+    display: none;
     position: absolute;
     border: 1px solid black;
     background: white;

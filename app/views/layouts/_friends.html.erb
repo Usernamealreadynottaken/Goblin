@@ -1,57 +1,144 @@
 <div class="friends">
-    <span class="close">Close</span>
-    <% if user && friends.count + pending.count + invited.count > 0 %>
-    
-        <p>Your friends</p>
-        <ul>
-            <% friends.each do |friend| %>
-            <li id="<%= friend.id %>">
-                <span class="name"><%= friend.name %></span>
-            </li>
-            <% end %>
-            <% pending.each do |friend| %>
-            <li id="<%= friend.id %>">
-                <span class="name"><%= friend.name %></span>
-                <span><span class="accept">accept</span> / <span class="decline">decline</span></span>
-            </li>
-            <% end %>
-            <% invited.each do |friend| %>
-            <li id="<%= friend.id %>">
-                <span class="name"><%= friend.name %></span>
-                <span>waiting...</span>
-            </li>
-            <% end %>
-        </ul>
+    <div class="friends-wrapper">
+        <span class="close">Close</span>
+        <% if user && friends.count + pending.count + invited.count > 0 %>
         
-    <% else %>
-        <p>You have no friends :(</p>
-    <% end %>
-    
-    <script>
-    
-        $(".close").click(function() {
-            stopRefreshing();
-            $(".friends").empty();
-        });
-        
-        $(".accept").click(function() {
-            alert("accept");    
-        });
-        
-        $(".decline").click(function() {
-            var friendId = $(this).parent().parent().attr("id");
-            var userId = <%= user.id %>;
+            <p>Your friends</p>
+            <form class="invite">
+                <input class="invite-field" type="text" placeholder="Enter name">
+                <button>Invite</button>
+                <p></p>
+            </form>
+            <ul>
+                <li class="befriended">
+                    <ul>
+                        <% friends.each do |friend| %>
+                        <li id="<%= friend.id %>">
+                            <span class="name"><%= friend.name %></span>
+                            <span class="remove">remove</span><span class="remove-yes">yes</span><span class="remove-no">no</span>
+                        </li>
+                        <% end %>
+                    </ul>
+                </li>
+                <li class="pending">
+                    <ul>
+                        <% pending.each do |friend| %>
+                        <li id="<%= friend.id %>">
+                            <span class="name"><%= friend.name %></span>
+                            <span><span class="accept">accept</span> / <span class="decline">decline</span></span>
+                        </li>
+                        <% end %>
+                    </ul>
+                </li>
+                <li class="invited">
+                    <ul>
+                        <% invited.each do |friend| %>
+                        <li id="<%= friend.id %>">
+                            <span class="name"><%= friend.name %></span>
+                            <span>waiting...</span>
+                        </li>
+                        <% end %>
+                    </ul>
+                </li>
+            </ul>
             
-            var url = "<%= url_for(remove_friendship_path('userId', 'friendId')) %>";
-            url = url.replace("userId", userId).replace("friendId", friendId);
+        <% else %>
+            <p>You have no friends :(</p>
+            <form class="invite">
+                <input class="invite-field" type="text" placeholder="Enter name">
+                <button>Invite</button>
+                <p></p>
+            </form>
+        <% end %>
         
-            $.ajax({
-               type: "POST",
-               url: url,
-            })
+        <script>
+        
+            $(".close").click(function() {
+                stopRefreshing();
+                $(".friends").empty();
+            });
             
-        });
-        
-    </script>
+            $(".invite").submit(function(event) {
+                event.preventDefault();
+                var friend = $(".invite-field").val();
+                var userId = <%= user.id %>;
+                    
+                if (friend.length > 0) {
+                    
+                    if (friend != "<%= user.name %>") {
+                    
+                        var url = "<%= url_for(create_friendship_path("userId", "friendName")) %>";
+                        url = url.replace("userId", userId).replace("friendName", friend);
+                        
+                        $.ajax({
+                            type: "POST",
+                            url: url,
+                        })
+                            .done(function(data) {
+                                if (data.result != true) {
+                                    $(".invite p").html(data.result);
+                                } else {
+                                    $(".invite p").html();
+                                }
+                            });
+                            
+                    } else {
+                        $(".invite p").html("You already are Your best friend :)");
+                    }
+                }
+            });
+            
+            $(".accept").click(function() {
+                var friendId = $(this).parent().parent().attr("id");
+                var userId = <%= user.id %>;
+                
+                var url = "<%= url_for(accept_friendship_path("userId", "friendId")) %>";
+                url = url.replace("userId", userId).replace("friendId", friendId);
+            
+                $.ajax({
+                   type: "POST",
+                   url: url,
+                })
+            });
+            
+            $(".decline").click(function() {
+                var friendId = $(this).parent().parent().attr("id");
+                var userId = <%= user.id %>;
+                
+                destroy_friendship(friendId, userId);
+            });
+            
+            $(".remove").click(function() {
+                remove_toggle($(this));
+            });
+            
+            $(".remove-no").click(function() {
+                remove_toggle($(this));
+            });
+            
+            $(".remove-yes").click(function() {
+                var friendId = $(this).parent().attr("id");
+                var userId = <%= user.id %>;
+                
+                destroy_friendship(friendId, userId);
+            });
+            
+            function remove_toggle(element) {
+               element.toggle();
+               element.siblings("span:not(.name)").toggle();
+            }
+            
+            function destroy_friendship(friendId, userId) {
+                var url = "<%= url_for(remove_friendship_path("userId", "friendId")) %>";
+                url = url.replace("userId", userId).replace("friendId", friendId);
+            
+                $.ajax({
+                   type: "POST",
+                   url: url,
+                });
+            }
+            
+        </script>
     
-</div>
+    </div> <!-- .friends-wrapper -->
+</div> <!-- .friends -->
