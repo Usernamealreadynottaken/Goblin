@@ -25,4 +25,14 @@ class GameCategoriesController < ApplicationController
     "fail"
   end
   
+  def delete
+    begin
+      cat = GameCategory.find(params[:id])
+      cat.destroy
+      render json: { id: params[:id], deleting: "category" }
+    rescue
+      "fail"      
+    end
+  end
+  
 end

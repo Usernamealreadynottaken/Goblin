@@ -65,6 +65,17 @@
 				<% end %>
 			</div> <!-- .catform-form-container -->
 		</div> <!-- .catform-container -->
+		
+		<!-- Delete confirmation dialog -->
+		<div class="confirm-container dialog">
+			<div class="confirm-close-button">Close</div>
+			<div class="confirm-message">Are you sure?</div>
+			<input type="hidden" class="confirm-id">
+			<div class="confirm-yesno-wrapper">
+				<div class="confirm-yes">Yes</div>
+				<div class="confirm-no">No</div>
+			</div> <!-- .confirm-yesno-wrapper -->
+		</div> <!-- .confirm-container -->
 	
 		<!-- GMs game menu -->
 		<div class="gm-container">
@@ -78,43 +89,46 @@
 			<%= "No categories" if @game.game_categories.empty? %>
 			
 			<% @game.game_categories.each do |category| %>
-			<li>
-				<div class="category" id="category-<%= category.id %>">
-					<div class="category-title"><%= category.name %></div>
-					
-					<ul class="category-items sortable<%= " empty" if category.gm_items.empty? %>">
-					<% if !category.gm_items.empty? %>
-    					<% category.gm_items.each do |item| %>
-    						<li class="category-item item" id="item-<%= item.id %>">
-    							<div class="item-name"><%= if !item.magic_name.blank?
-    								item.magic_name 
-    							else 
-    								item.name 
-    							end %></div>
-    							<div class="item-menu">Edit Delete</div>
-    							<div class="item-hover">
-    								<div class="item-hover-magicname"><%= item.magic_name %></div>
-    								<div class="item-hover-name<%= " only" if item.magic_name.blank? %>"><%= item.name %></div>
-    								<div class="item-hover-properties"><% if !item.properties.blank? %>
-    									<ul>
-    									<% item.properties.split("\n").each do |property| %>
-    										<li><%= property %></li>
-    									<% end %>
-    									</ul>
-    								<% end %></div>
-    								<div class="item-hover-description"><%= item.description %></div>
-    								<input type="checkbox" class="item-hover-identified"<%= " checked" if item.identified? %>>
-    							</div> <!-- .item-hover -->
-    						</li> <!-- .category-item .item -->
-    					<% end %>
-					<% end %>
-					   <li class="emptyMessage" 
-					       <% if !category.gm_items.empty? %>
-					           style="display: none"
-				           <% end %>>Empty</li>
-					</ul> <!-- .category-items -->
-				</div> <!-- .category -->
-			</li>
+				<li>
+					<div class="category" id="category-<%= category.id %>">
+						<div class="category-title"><%= category.name %></div>
+						<div class="category-delete">Delete</div>
+						<div class="category-edit">Edit</div>
+						
+						<ul class="category-items sortable<%= " empty" if category.gm_items.empty? %>">
+						<% if !category.gm_items.empty? %>
+	    					<% category.gm_items.each do |item| %>
+	    						<li class="category-item item" id="item-<%= item.id %>">
+	    							<div class="item-name"><%= if !item.magic_name.blank?
+	    								item.magic_name 
+	    							else 
+	    								item.name 
+	    							end %></div>
+	    							<div class="item-delete">Delete</div>
+									<div class="item-edit">Edit</div>
+	    							<div class="item-hover">
+	    								<div class="item-hover-magicname"><%= item.magic_name %></div>
+	    								<div class="item-hover-name<%= " only" if item.magic_name.blank? %>"><%= item.name %></div>
+	    								<div class="item-hover-properties"><% if !item.properties.blank? %>
+	    									<ul>
+	    									<% item.properties.split("\n").each do |property| %>
+	    										<li><%= property %></li>
+	    									<% end %>
+	    									</ul>
+	    								<% end %></div>
+	    								<div class="item-hover-description"><%= item.description %></div>
+	    								<input type="checkbox" class="item-hover-identified"<%= " checked" if item.identified? %>>
+	    							</div> <!-- .item-hover -->
+	    						</li> <!-- .category-item .item -->
+	    					<% end %>
+						<% end %>
+						   <li class="emptyMessage" 
+						       <% if !category.gm_items.empty? %>
+						           style="display: none"
+					           <% end %>>Empty</li>
+						</ul> <!-- .category-items -->
+					</div> <!-- .category -->
+				</li>
 			<% end %>
 			
 			</ul> <!-- .gm-game-categories -->
@@ -142,7 +156,8 @@
         							else
         								item.name
         							end %></div>
-        							<div class="item-menu">Edit Delete</div>
+        							<div class="item-delete">Delete</div>
+									<div class="item-edit">Edit</div>
         							<div class="item-hover">
 	    								<div class="item-hover-magicname"><%= item.magic_name %></div>
 	    								<div class="item-hover-name<%= " only" if item.magic_name.blank? %>"><%= item.name %></div>
@@ -179,9 +194,7 @@
 
 <script>
 
-	$(document).ready(function() {
-    	$(".catform-container").toggle();
-    	
+	$(document).ready(function() {    	
     	// For add/edit item form
     	window.itemAddUrl = "<%= url_for(item_add_path) %>";
     	window.itemUpdateUrl = "<%= url_for(item_update_path) %>";
@@ -196,10 +209,10 @@
     	window.catUpdateUrl = "<%= url_for(game_category_update_path) %>";
     	window.gameId = "<%= @game.id %>";
     	
-    	// Hovers
-    	$(".item").hover(function() {
-    		$(this).find(".item-hover").toggle();
-    	});
+    	// For delete item/category dialog
+    	window.itemDelUrl = "<%= url_for(item_delete_path) %>";
+    	window.catDelUrl = "<%= url_for(game_category_delete_path) %>";
+    	
     });
 
     function updateCategoryItem(destination, itemId) {
@@ -364,7 +377,8 @@
     		
     		// Item menu
     		// TODO
-    		item.append('<div class="item-menu">Edit Delete</div>');
+    		item.append('<div class="item-delete">Delete</div>');
+    		item.append('<div class="item-edit">Edit</div>');
     		
     		// Hover
     		// We just need to create the tag structure without content, then we can use
@@ -389,18 +403,15 @@
     		// Use updateItem to fill in data
     		updateItem(newData);
     		
-    		// Just need to bind hover and click functions to the new div
-    		$("#item-" + newData.id).hover(function() {
-    			$(this).find(".item-hover").toggle();
-    		});
+    		// Just need to bind click function to the new div
     		$("#item-" + newData.id).click(function() {
     			prepareItemFormUpdate(this);
     		});
     	}
     }
     
-    $(".item").click(function() {
-    	prepareItemFormUpdate(this);
+    $(".item-edit").click(function() {
+    	prepareItemFormUpdate($(this).parent());
     });
     
     $(".gm-add-item").click(function() {
@@ -459,7 +470,7 @@
     	
     	// Form fields
     	$(".catform-id").val(clickedId);
-    	$(".catform-name").val($(clicked).text());
+    	$(".catform-name").val($(clicked).parent().find('.category-title').text());
     	
     	// Titles etc.
     	$(".catform-title").text("Edit category");
@@ -486,6 +497,11 @@
     	
     	// Title
     	cat.append('<div class="category-title">' + newData.name + '</div>');
+    	
+    	// Category add/delete buttons
+    	// TODO
+    	cat.append('<div class="category-delete">Delete</div>');
+    	cat.append('<div class="category-edit">Edit</div>');
     	
     	// List for items (initially empty)
     	cat.append('<ul class="category-items sortable empty ui-sortable">\n<li class="emptyMessage">Empty</li>\n</ul>');
@@ -518,13 +534,15 @@
     	if ($(".itemform-container").is(":visible") && window.addEditMode == "add") {
     		$(".itemform-categoryid").val(window.selectedCategoryId);
     		$(".itemform-title").html("Adding item to:<br>" + window.selectedCategoryName);
-	    } else {
-	    	prepareCatFormUpdate(clicked);
 	    }
     }
    
     $(".category-title").click(function() {
     	categoryClickHandle(this);
+    });
+    
+    $(".category-edit").click(function() {
+    	prepareCatFormUpdate(this);
     });
     
     $(".gm-add-category").click(function() {
@@ -546,6 +564,87 @@
     		}
     	});
     	$(".catform-form").submit();
+    });
+    
+    /* DELETE ITEM/CATEGORY DIALOG JS */
+   
+    function prepareItemDelete(clicked) {
+    	$(".confirm-id").val($(clicked).attr("id").split("-")[1]);
+    	window.deleteUrl = window.itemDelUrl;
+    	$(".confirm-message").text("Are you sure you want to delete the following item?\n" + $(clicked).find(".item-name").text());
+    	$(".confirm-container").show();
+    }
+    
+    function prepareCatDelete(clicked) {
+    	$(".confirm-id").val($(clicked).attr("id").split("-")[1]);
+    	window.deleteUrl = window.catDelUrl;
+    	$(".confirm-message").text("Are you sure you want to delete the following category?\n" + $(clicked).find(".category-title").text());
+    	$(".confirm-container").show();
+    }
+    
+    function deleteItem(id) {
+    	var item = $("#item-" + id);
+    	var itemCat = item.parent();
+    	
+    	// First delete item
+    	item.remove();
+    	
+    	// If there are no more items in that category or player's inventory
+    	// we should dislplay "Empty" message
+    	if (!itemCat.find(".item").length) {
+    		itemCat.find(".emptyMessage").show();
+    	}
+    }
+    
+    function deleteCategory(id) {
+    	var cat = $("#category-" + id).parent();
+    	var catContainer = cat.parent();
+    	
+    	// First delete category
+    	cat.remove();
+    	
+    	// If there are no more categories display "Empty" message
+    	if (!catContainer.find(".category").length) {
+    		catContainer.addClass("empty");
+    		catContainer.text("No categories");
+    	}
+    }
+    
+    $(".confirm-close-button").click(function() {
+    	$(".confirm-container").hide();
+    });
+    
+    $(".confirm-no").click(function() {
+    	$(".confirm-container").hide();
+    });
+    
+    $(".confirm-yes").click(function() {
+    	$.ajax({
+    		type: "POST",
+    		url: window.deleteUrl,
+    		data: { id: $(".confirm-id").val() }
+    	})
+    		.success(function(data) {
+    			if (data != null && typeof data === "object") {
+					if (data.deleting == "item") {
+						deleteItem(data.id);
+					} else {
+						deleteCategory(data.id);
+					}
+	    		}
+    		});
+    });
+   
+    $(".item-delete").click(function() {
+    	prepareItemDelete($(this).parent());
+    });
+    
+    $(".category-delete").click(function() {
+    	if ($(this).parent().find(".category-items > .item").length) {
+    		alert("You can only delete empty categories!");
+    	} else {
+    		prepareCatDelete($(this).parent());
+    	}
     });
    
 </script>

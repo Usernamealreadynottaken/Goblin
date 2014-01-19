@@ -19,9 +19,11 @@ Goblin::Application.routes.draw do
   
   match '/item/add', to: 'items#add', via: 'post', as: 'item_add'
   match '/item/update', to: 'items#update', via: 'post', as: 'item_update'
+  match '/item/delete', to: 'items#delete', via: 'post', as: 'item_delete'
   
   match '/gamecat/add', to: 'game_categories#add', via: 'post', as: 'game_category_add'
   match '/gamecat/update', to: 'game_categories#update', via: 'post', as: 'game_category_update'
+  match '/gamecat/delete', to: 'game_categories#delete', via: 'post', as: 'game_category_delete'
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

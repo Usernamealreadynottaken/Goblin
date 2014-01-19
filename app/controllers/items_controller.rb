@@ -38,4 +38,14 @@ class ItemsController < ApplicationController
     "fail"
   end
   
+  def delete
+    begin
+      item = Item.find(params[:id])
+      item.destroy
+      render json: { id: params[:id], deleting: "item" }
+    rescue
+      "fail"
+    end
+  end
+  
 end

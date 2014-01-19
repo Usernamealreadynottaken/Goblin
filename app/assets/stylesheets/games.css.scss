@@ -56,7 +56,8 @@
       display: inline-block;                  
     } // .item-name
     
-    .item-menu {
+    .item-edit, .item-delete {
+      margin: 0 5px 0 0;
       cursor: pointer;
       display: inline-block;
       float: right;
@@ -172,6 +173,7 @@
   } // .itemform-container
   
   .catform-container {
+    display: none;
     position: absolute;
     border: 1px solid black;
     background: white;
@@ -217,6 +219,50 @@
     
   } // .catform-container
   
+  .confirm-container {
+    display: none;
+    position: absolute;
+    border: 1px solid black;
+    background: white;
+    padding: 5px;
+    width: 350px;
+    left: 50%;
+    margin-left: -175px;
+    
+    .confirm-close-button {
+      width: 100%;
+      text-align: right;
+    }
+    
+    .confirm-message {
+      width: 100%;
+      text-align: center;
+      margin: 10px 0;
+    }
+    
+    .confirm-yesno-wrapper {
+      width: 100%;
+      text-align: center;
+    
+      .confirm-yes {
+        display: inline-block;
+        margin-left: auto;
+        margin-right: auto;
+        margin: 0 10px 0 0;
+        cursor: pointer;
+      }
+      
+      .confirm-no {
+        display: inline-block;
+        margin-left: auto;
+        margin-right: auto;
+        cursor: pointer;
+      }
+    
+    } // .confirm-yesno-wrapper
+    
+  } // .confirm-container
+  
   .gm-container {
     display: inline-block;
     width: 400px;
@@ -253,10 +299,20 @@
         
         .category-title {
           text-align: center;
+          display: inline-block;
+          width: 200px;
+          padding: 0 0 0 100px;
         } // .category-title
         
+        .category-edit, .category-delete {
+          margin: 0 5px 0 0;
+          cursor: pointer;
+          display: inline-block;
+          float: right;
+        }
+        
         .category-items {
-          width: 90%;
+          width: 400px;
           margin-left: auto;
           margin-right: auto;
           padding: 5px 0 0 0;
